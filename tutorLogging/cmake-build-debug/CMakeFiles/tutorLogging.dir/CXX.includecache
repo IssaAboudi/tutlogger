@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/c/Users/ma422/CLionProjects/tutorLogging/header.hpp
+
+/mnt/c/Users/ma422/CLionProjects/tutorLogging/main.cpp
+iostream
+-
+climits
+-
+fstream
+-
+chrono
+-
+header.hpp
+/mnt/c/Users/ma422/CLionProjects/tutorLogging/header.hpp
+
