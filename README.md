@@ -6,8 +6,10 @@ Instructions to setup for yourself:
 You'll need to make sure you have MinGW installed (you can download from https://sourceforge.net/projects/mingw/) and that you have your path set in Windows to use the compiler
 
 Run the following two commands
-*g++ -c *.cpp
-*g++ -o Tutoring.exe *.o
+
+g++ -c *.cpp
+
+g++ -o Tutoring.exe *.o
 
 on Windows
 
