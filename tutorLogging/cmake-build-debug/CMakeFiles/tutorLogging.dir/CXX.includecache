@@ -6,9 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/mnt/c/Users/ma422/CLionProjects/tutorLogging/header.hpp
-
-/mnt/c/Users/ma422/CLionProjects/tutorLogging/main.cpp
+/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/header.hpp
 iostream
 -
 climits
@@ -17,6 +15,12 @@ fstream
 -
 chrono
 -
+vector
+-
+cstring
+-
+
+/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/main.cpp
 header.hpp
-/mnt/c/Users/ma422/CLionProjects/tutorLogging/header.hpp
+/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/header.hpp
 

@@ -48,19 +48,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/bin/cmake-3.20.2/bin/cmake
+CMAKE_COMMAND = /home/issa/cmake-3.20.0/bin/cmake
 
 # The command to remove a file.
-RM = /usr/bin/cmake-3.20.2/bin/cmake -E rm -f
+RM = /home/issa/cmake-3.20.0/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/c/Users/ma422/CLionProjects/tutorLogging
+CMAKE_SOURCE_DIR = /mnt/c/Users/ma422/Documents/tutlogger/tutorLogging
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/c/Users/ma422/CLionProjects/tutorLogging/cmake-build-debug
+CMAKE_BINARY_DIR = /mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -68,7 +68,7 @@ CMAKE_BINARY_DIR = /mnt/c/Users/ma422/CLionProjects/tutorLogging/cmake-build-deb
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake-3.20.2/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/home/issa/cmake-3.20.0/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -78,7 +78,7 @@ rebuild_cache/fast: rebuild_cache
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake-3.20.2/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	/home/issa/cmake-3.20.0/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -87,9 +87,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/ma422/CLionProjects/tutorLogging/cmake-build-debug/CMakeFiles /mnt/c/Users/ma422/CLionProjects/tutorLogging/cmake-build-debug//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/CMakeFiles /mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/ma422/CLionProjects/tutorLogging/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

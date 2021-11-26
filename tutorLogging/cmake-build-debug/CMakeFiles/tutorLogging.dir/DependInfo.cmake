@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/mnt/c/Users/ma422/CLionProjects/tutorLogging/main.cpp" "/mnt/c/Users/ma422/CLionProjects/tutorLogging/cmake-build-debug/CMakeFiles/tutorLogging.dir/main.cpp.o"
+  "/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/main.cpp" "/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/CMakeFiles/tutorLogging.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
