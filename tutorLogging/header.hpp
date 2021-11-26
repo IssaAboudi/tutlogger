@@ -18,8 +18,10 @@
 
 #if DEBUG == 1
 #define LOG(X) std::cout << X << std::endl
+#define SPACER() std::cout << std::endl
 #elif DEBUG == 0
 #define LOG(X)
+#define SPACER()
 #endif
 
 void clearCIN(void);
@@ -99,7 +101,7 @@ std::pair<std::string, std::string> breakTime(std::string inString, char delim){
     return finalPair;
 }
 
-//
+
 void addNewSession(std::fstream &file){
     std::string input;
     std::string numInput;
@@ -109,7 +111,7 @@ void addNewSession(std::fstream &file){
     std::getline(std::cin, input);
     std::cout << "How long was your session (hour.min): ";
     std::getline(std::cin, numInput);
-    std::pair<std::string, std::string> time = breakTime(numInput, '.');
+    std::pair<std::string, std::string> time = breakTime(numInput, '.'); //TODO: decide whether delimiter is ':' or '.' (maybe both?)
     hour = std::stoi(time.first);
     min = std::stoi(time.second);
 

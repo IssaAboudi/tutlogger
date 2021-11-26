@@ -48,7 +48,7 @@ int main() {
                 addNewSession(tutoringFile);
                 break;
             case 2:
-                //TODO: List contents of file in neat format
+                //TODO: List contents of file in neat format - make new function
                 break;
         }
     } while(menuInput != 3);
@@ -57,8 +57,8 @@ int main() {
 
     tutoringFile.close();
 
-    std::cout << std::endl;
-    std::cout << "Program Ending" << std::endl;
+    SPACER();
+    LOG("Program Ending");
     return 0;
 }
 
