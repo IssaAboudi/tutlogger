@@ -99,7 +99,7 @@ std::pair<std::string, std::string> breakTime(std::string inString, char delim){
     return finalPair;
 }
 
-
+//
 void addNewSession(std::fstream &file){
     std::string input;
     std::string numInput;

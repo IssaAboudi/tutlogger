@@ -36,8 +36,12 @@ int main() {
         std::cout << "1) Add new session" << std::endl;
         std::cout << "2) View sessions" << std::endl;
         std::cout << "3) Exit" << std::endl;
+        std::cout << ">> ";
         std::cin >> menuInput;
         clearCIN(); //clear cin buffer
+
+        //TODO: make better keybindings. Maybe "esc" to exit, "a" to add and "v" to view?
+
 
         switch(menuInput){
             case 1:
