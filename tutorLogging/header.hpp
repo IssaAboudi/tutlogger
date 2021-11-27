@@ -111,13 +111,24 @@ void addNewSession(std::fstream &file){
     std::getline(std::cin, input);
     std::cout << "How long was your session (hour.min): ";
     std::getline(std::cin, numInput);
+
     std::pair<std::string, std::string> time = breakTime(numInput, '.'); //TODO: decide whether delimiter is ':' or '.' (maybe both?)
     hour = std::stoi(time.first);
     min = std::stoi(time.second);
 
-
     file << getDate() << " : " << input << " " << hour << " hour(s) " << min << " mins";
     file << std::endl;
+}
+
+void printSessions(std::fstream &file){
+    std::string date = getDate(); //check current date
+
+
+    std::string fileDate;
+    while(!file.eof()){
+        file >> fileDate; //get date of session from the file
+    }
+
 }
 
 void clearCIN(void){

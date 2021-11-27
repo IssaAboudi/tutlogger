@@ -48,6 +48,7 @@ int main() {
                 addNewSession(tutoringFile);
                 break;
             case 2:
+                printSessions(tutoringFile);
                 //TODO: List contents of file in neat format - make new function
                 break;
         }
