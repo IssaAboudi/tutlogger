@@ -6,6 +6,8 @@
 
 #IncludeRegexTransform: 
 
+/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/DebugMode.hpp
+
 /mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/header.hpp
 iostream
 -
@@ -19,6 +21,8 @@ vector
 -
 cstring
 -
+DebugMode.hpp
+/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/DebugMode.hpp
 
 /mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/main.cpp
 header.hpp

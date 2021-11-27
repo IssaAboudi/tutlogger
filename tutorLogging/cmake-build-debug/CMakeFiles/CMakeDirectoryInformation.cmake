@@ -3,7 +3,7 @@
 
 # Relative path conversion top directories.
 set(CMAKE_RELATIVE_PATH_TOP_SOURCE "/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging")
-set(CMAKE_RELATIVE_PATH_TOP_BINARY "/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug")
+set(CMAKE_RELATIVE_PATH_TOP_BINARY "/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug")
 
 # Force unix paths in dependencies.
 set(CMAKE_FORCE_UNIX_PATHS 1)

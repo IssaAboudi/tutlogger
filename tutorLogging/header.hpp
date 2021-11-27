@@ -12,20 +12,9 @@
 #include <chrono>
 #include <vector>
 #include <cstring>
-
-//Quick Logging
-#define DEBUG 1
-
-#if DEBUG == 1
-#define LOG(X) std::cout << X << std::endl
-#define SPACER() std::cout << std::endl
-#elif DEBUG == 0
-#define LOG(X)
-#define SPACER()
-#endif
+#include "DebugMode.hpp"
 
 void clearCIN(void);
-
 
 std::string getDate(void){
     std::chrono::system_clock::time_point today = std::chrono::system_clock::now();
@@ -101,34 +90,52 @@ std::pair<std::string, std::string> breakTime(std::string inString, char delim){
     return finalPair;
 }
 
-
 void addNewSession(std::fstream &file){
     std::string input;
     std::string numInput;
-    int hour;
-    int min;
     std::cout << "Please enter what subject you tutored in: ";
     std::getline(std::cin, input);
-    std::cout << "How long was your session (hour.min): ";
+    std::cout << "How many minutes was your session?: ";
     std::getline(std::cin, numInput);
 
-    std::pair<std::string, std::string> time = breakTime(numInput, '.'); //TODO: decide whether delimiter is ':' or '.' (maybe both?)
-    hour = std::stoi(time.first);
-    min = std::stoi(time.second);
+    int hour = std::stoi(numInput) / 60;
+    int min = std::stoi(numInput) % 60;
 
-    file << getDate() << " : " << input << " " << hour << " hour(s) " << min << " mins";
+    file << getDate() << " : " << input << " - " << hour << " hour(s) and " << min << " minutes";
     file << std::endl;
 }
 
-void printSessions(std::fstream &file){
-    std::string date = getDate(); //check current date
+void addNewSession(std::fstream &file, float &time){
+    std::string input;
+    std::cout << "Please enter what subject you tutored in: ";
+    std::getline(std::cin, input);
+
+    int hour = (int)time / 60;
+    int min = (int)time % 60;
+
+    file << getDate() << " : " << input << " - " << hour << " hour(s) and " << min << " minutes";
+    file << std::endl;
+}
 
 
-    std::string fileDate;
-    while(!file.eof()){
-        file >> fileDate; //get date of session from the file
-    }
+void timeSession(std::fstream &file){
+//    std::chrono::minutes one_sec;
+//    std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
 
+    std::chrono::system_clock::time_point start;
+    std::chrono::system_clock::time_point end;
+    std::string input;
+
+    start = std::chrono::system_clock::now(); //records begin time
+    std::cout << "Press any key when you reach the end of your session" << std::endl;
+    while (!std::cin.get()) { /*Just waits for end of session*/}
+    end = std::chrono::system_clock::now(); //records end time
+
+    std::chrono::duration<float> duration = end - start; //calculate duration
+    float minutes = std::chrono::duration_cast<std::chrono::seconds>(duration).count() / 60;
+    LOG(minutes);
+
+    addNewSession(file, minutes); //adds to log file
 }
 
 void clearCIN(void){

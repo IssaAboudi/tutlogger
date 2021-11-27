@@ -8,38 +8,38 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug"/>
+				<Option working_dir="/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j16 -f &quot;/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -j16 -f &quot;/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j16 -f &quot;/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j16 -f &quot;/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug"/>
+				<Option working_dir="/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j16 -f &quot;/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make -j16 -f &quot;/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j16 -f &quot;/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j16 -f &quot;/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug"/>
+				<Option working_dir="/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j16 -f &quot;/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make -j16 -f &quot;/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j16 -f &quot;/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j16 -f &quot;/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="tutorLogging">
-				<Option output="/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/tutorLogging" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug"/>
+				<Option output="/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/tutorLogging" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -53,15 +53,15 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j16 -f &quot;/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 tutorLogging"/>
-					<CompileFile command="/usr/bin/make -j16 -f &quot;/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j16 -f &quot;/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j16 -f &quot;/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 tutorLogging"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="tutorLogging/fast">
-				<Option output="/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/tutorLogging" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug"/>
+				<Option output="/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/tutorLogging" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -75,13 +75,16 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j16 -f &quot;/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 tutorLogging/fast"/>
-					<CompileFile command="/usr/bin/make -j16 -f &quot;/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j16 -f &quot;/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j16 -f &quot;/mnt/c/users/ma422/Documents/tutlogger/tutorlogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j16 -f &quot;/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 tutorLogging/fast"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/DebugMode.hpp">
+			<Option target="tutorLogging"/>
+		</Unit>
 		<Unit filename="/mnt/c/Users/ma422/Documents/tutlogger/tutorLogging/main.cpp">
 			<Option target="tutorLogging"/>
 		</Unit>

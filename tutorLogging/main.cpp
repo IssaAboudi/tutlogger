@@ -34,7 +34,7 @@ int main() {
         std::cout << "-=-=-=-=-=-=-=-=-=-=-" << std::endl;
         LOG(getDateTime());
         std::cout << "1) Add new session" << std::endl;
-        std::cout << "2) View sessions" << std::endl;
+        std::cout << "2) Time new session" << std::endl;
         std::cout << "3) Exit" << std::endl;
         std::cout << ">> ";
         std::cin >> menuInput;
@@ -48,12 +48,13 @@ int main() {
                 addNewSession(tutoringFile);
                 break;
             case 2:
-                printSessions(tutoringFile);
-                //TODO: List contents of file in neat format - make new function
+                timeSession(tutoringFile);
+                //TODO: time new session from the app itself
                 break;
         }
     } while(menuInput != 3);
 
+    tutoringFile << "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << std::endl; //divide different program runs
 
 
     tutoringFile.close();
