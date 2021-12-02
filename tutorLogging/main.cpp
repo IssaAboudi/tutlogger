@@ -49,7 +49,6 @@ int main() {
                 break;
             case 2:
                 timeSession(tutoringFile);
-                //TODO: time new session from the app itself
                 break;
         }
     } while(menuInput != 3);
