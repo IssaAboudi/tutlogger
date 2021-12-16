@@ -14,5 +14,9 @@ g++ -o Tutoring.exe *.o
 on Windows
 
 The program will generate a text file which you'll keep adding to.
+#~~~~~~
 
 You can also download a precompiled executable under Releases
+https://github.com/IssaAboudi/tutlogger/releases
+
+As of 12/16/2021 there is only a Windows executable avaliable, I will add more soon
