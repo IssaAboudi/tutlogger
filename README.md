@@ -23,6 +23,7 @@ https://github.com/IssaAboudi/tutlogger/releases
 
 As of 12/16/2021 there is only a Windows executable avaliable, I will add more soon
 
+# version 1.0.0
 **Images:**
 ![Screenshot 2021-12-16 134728](https://user-images.githubusercontent.com/65807151/146454009-5de7d359-5ea8-400f-a606-610ba4643990.png)
 ![Screenshot 2021-12-16 134910](https://user-images.githubusercontent.com/65807151/146454129-55c41027-ba6c-4c36-be79-c9cb45943778.png)
