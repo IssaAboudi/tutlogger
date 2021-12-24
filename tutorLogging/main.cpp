@@ -1,4 +1,4 @@
-
+#include "tutee.hpp"
 #include "header.hpp"
 
 //======================================================
@@ -16,17 +16,20 @@
 
 
 int main() {
+    //Create folder for our program to store data in (easily accessible by the user) - returns path
+    std::string folder = createFolder(); //stores OS specific file path (see function definition)
 
     std::fstream tutoringFile; //to reference the text file
     int menuInput; //userInput for the menu
 
-    //need to figure out how to use chrono to get timestamp
+    std::string tutoringLog = folder;
+    tutoringLog.append("/tutoringLog.txt");
 
-    tutoringFile.open("tutoringLog.txt", std::ios::in | std::fstream::app); //open the log file to add to
+    tutoringFile.open(tutoringLog, std::ios::in | std::fstream::app); //open the log file to add to
     if(tutoringFile.fail()){ //if it fails to open - perhaps it doesn't exist -> create new file
         std::cout << "File failed to open. Creating new file" << std::endl;
-        tutoringFile.open("tutoringLog.txt", std::ios::out); //make the file
-        tutoringFile.open("tutoringLog.txt", std::ios::in | std::fstream::app);
+        tutoringFile.open(tutoringLog, std::ios::out); //make the file
+        tutoringFile.open(tutoringLog, std::ios::in | std::fstream::app);
     } //otherwise we're good
 
     do {

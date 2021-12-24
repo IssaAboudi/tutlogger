@@ -3,4 +3,4 @@ project(tutorLogging)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(tutorLogging main.cpp DebugMode.hpp)
+add_executable(tutorLogging main.cpp tutee_windows.cpp tutee_linux.cpp)
