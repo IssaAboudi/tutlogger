@@ -1,6 +1,9 @@
 # tutlogger
 As an LPC tutor I needed a cleaner way to keep track of the sessions I've done on a particular day
 
+**Libraries used:**
+-Nlohmann JSON library for saving and loading data locally
+	Found here: https://github.com/nlohmann/json
 
 **Instructions to build yourself:**
 
