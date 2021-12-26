@@ -14,7 +14,11 @@
 #include <cstring>
 #include "DebugMode.hpp"
 
-void clearCIN(void);
+void clearCIN(void){
+    //Clears Cin Buffer - ignores rest of input
+    std::cin.clear();
+    std::cin.ignore(INT_MAX, '\n');
+}
 
 std::string getDate(void){
     std::chrono::system_clock::time_point today = std::chrono::system_clock::now();
@@ -119,9 +123,6 @@ void addNewSession(std::fstream &file, float &time){
 
 
 void timeSession(std::fstream &file){
-//    std::chrono::minutes one_sec;
-//    std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
-
     std::chrono::system_clock::time_point start;
     std::chrono::system_clock::time_point end;
     std::string input;
@@ -138,10 +139,6 @@ void timeSession(std::fstream &file){
     addNewSession(file, minutes); //adds to log file
 }
 
-void clearCIN(void){
-    std::cin.clear();
-    std::cin.ignore(INT_MAX, '\n');
-}
 
 
 #endif //TUTORLOGGING_HEADER_HPP

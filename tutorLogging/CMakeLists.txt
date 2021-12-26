@@ -3,4 +3,4 @@ project(tutorLogging)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(tutorLogging main.cpp tutee_windows.cpp tutee_linux.cpp)
+add_executable(tutorLogging main.cpp Files/files_windows.cpp Files/files_linux.cpp)

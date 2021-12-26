@@ -5,13 +5,20 @@
 #ifndef TUTORLOGGING_DEBUGMODE_HPP
 #define TUTORLOGGING_DEBUGMODE_HPP
 
+#define OFF 0
+#define ON 1
+//-=-=-=-=-=-=-=-=-=-=-=//
 //Quick Logging
-#define DEBUG 0
+#define DEBUG OFF
 
-#if DEBUG == 1
+//Release Mode toggle
+#define RELEASE ON
+
+//-=-=-=-=-=-=-=-=-=-=-=//
+#if DEBUG == ON
 #define LOG(X) std::cout << X << std::endl
 #define SPACER() std::cout << std::endl
-#elif DEBUG == 0
+#elif DEBUG == OFF
 #define LOG(X)
 #define SPACER()
 #endif
