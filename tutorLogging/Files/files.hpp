@@ -20,7 +20,7 @@ public:
 
 
     friend std::ostream& operator<<(std::ostream &fs, const student &rval)  {
-        fs << rval;
+        fs << rval.name << " " << rval.subject << " " << rval.numSessions;
         return fs;
     }
 };

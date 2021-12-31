@@ -15,7 +15,7 @@ void updateLog(const std::string &filePath, std::vector<student> students) {
     LOG(logFile);
     std::fstream newFile;
     newFile.open(logFile, std::ios::in | std::ios::out);
-    if(newFile.fail()){ //if it fails to open - perhaps it doesn't exist -> create new file
+    if (newFile.fail()) { //if it fails to open - perhaps it doesn't exist -> create new file
         std::cout << "File failed to open. Creating new file" << std::endl;
         newFile.open(logFile, std::ios::out); //make the file
         newFile.open(logFile, std::ios::in);

@@ -20,25 +20,26 @@ void clearCIN(void){
     std::cin.ignore(INT_MAX, '\n');
 }
 
-std::string getDate(void){
+std::string getDate(void){ //get only date in a string
     std::chrono::system_clock::time_point today = std::chrono::system_clock::now();
     std::time_t printTime = std::chrono::system_clock::to_time_t(today);
     std::string dateTime = ctime(&printTime); //convert time to a string
+
     std::string date = dateTime.substr(0,10); //store only date
-    std::string year = dateTime.substr(20,4);
+    std::string year = dateTime.substr(20,4); //get the year
     date += " ";
     date += year;
     return date;
 }
 
-std::string getDateTime(void){
+std::string getDateTime(void){ //get both date and time in one string
     std::chrono::system_clock::time_point today = std::chrono::system_clock::now();
     std::time_t printTime = std::chrono::system_clock::to_time_t(today);
     std::string dateTime = ctime(&printTime); //convert time to a string
     return dateTime;
 }
 
-std::string getTime(void){
+std::string getTime(void){ //get only time in a string
     std::chrono::system_clock::time_point today = std::chrono::system_clock::now();
     std::time_t printTime = std::chrono::system_clock::to_time_t(today);
     std::string dateTime = ctime(&printTime); //convert time to a string
@@ -121,7 +122,6 @@ void addNewSession(std::fstream &file, float &time){
     file << std::endl;
 }
 
-
 void timeSession(std::fstream &file){
     std::chrono::system_clock::time_point start;
     std::chrono::system_clock::time_point end;
@@ -139,6 +139,10 @@ void timeSession(std::fstream &file){
     addNewSession(file, minutes); //adds to log file
 }
 
-
+void listStudents(std::vector<student> &students){
+    for (int i = 0; i < students.size(); ++i) {
+        std::cout << i << " : " << students[i] << std::endl;
+    }
+}
 
 #endif //TUTORLOGGING_HEADER_HPP

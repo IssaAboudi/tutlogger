@@ -12,7 +12,10 @@
 #define DEBUG OFF
 
 //Release Mode toggle
-#define RELEASE ON
+#define RELEASE OFF
+
+//Unit Test Mode toggle
+#define UNIT_TEST OFF
 
 //-=-=-=-=-=-=-=-=-=-=-=//
 #if DEBUG == ON
