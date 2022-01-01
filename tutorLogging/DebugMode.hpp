@@ -9,13 +9,13 @@
 #define ON 1
 //-=-=-=-=-=-=-=-=-=-=-=//
 //Quick Logging
-#define DEBUG OFF
+#define DEBUG ON
 
 //Release Mode toggle
 #define RELEASE OFF
 
 //Unit Test Mode toggle
-#define UNIT_TEST OFF
+#define UNIT_TEST ON
 
 //-=-=-=-=-=-=-=-=-=-=-=//
 #if DEBUG == ON

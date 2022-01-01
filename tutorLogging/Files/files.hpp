@@ -7,30 +7,15 @@
 #include <fstream>
 #include "../DebugMode.hpp"
 #include "../Ext/json.hpp"
-
-//Student Data Structure association with files
-
-struct student {
-public:
-    std::string name = "";
-    std::string subject = "";
-    int numSessions = 0;
-
-    //Functions with OS Specific Implementations:
-
-
-    friend std::ostream& operator<<(std::ostream &fs, const student &rval)  {
-        fs << rval.name << " " << rval.subject << " " << rval.numSessions;
-        return fs;
-    }
-};
+#include "../student.hpp"
 
 //Function definition depends on operating systems.
 //See:
 // files_windows.cpp - for Windows
 // files_linux.cpp - for Linux/Unix based OS's
 // files_mac.cpp - for Mac OS X (all) //TODO: Add definition for Mac OS
-//============================
+
+//===============================================
 //Returns a filepath (OS specific) to create folders & files
 std::string getFilePath();
 
@@ -38,9 +23,15 @@ std::string getFilePath();
 bool createFolder(const std::string &filePath);
 //TODO: add Windows and Mac Implementation
 
-void updateLog(const std::string &filePath, std::vector<student> students);
-//TODO: add Windows and Mac Implementation
+//===============================================
 
-//TODO: add pull from log function to fill up vector to use in main
+//All non-dependent definitions are found in:
+// files_all.cpp
+
+void updateRecords(const std::string &filePath, std::vector<student> students);
+// stores tutee information locally (on disk)
+
+void loadRecords(const std::string &filePath, std::vector<student> &students);
+// loads in tutee information from disk
 
 #endif //TUTORLOGGING_FILES_HPP

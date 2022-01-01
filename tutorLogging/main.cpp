@@ -1,6 +1,5 @@
 #include "Files/files.hpp"
 #include "header.hpp"
-
 //======================================================
 /*
  * Purpose of this program is to make logging tutoring hours
@@ -16,8 +15,8 @@
 
 void unitTest(){
     //currently trying to develop using the JSON library
-    // -- writing out to a file with updateLog()
-    // --reading in a file TODO: create readLog() function to read in JSON data from file
+    // -- writing out to a file with updateRecords()
+    // -- reading in a file with loadRecords()
 
     student newStudent;
     newStudent.name = "Test1";
@@ -35,7 +34,13 @@ void unitTest(){
     students.push_back(newStudent2);
 
     std::string filePath = getFilePath();
-    updateLog(filePath, students);
+    updateRecords(filePath, students);
+
+    std::vector<student> readIn;
+    loadRecords(filePath, readIn);
+
+    listStudents(readIn);
+
 }
 
 int main() {
@@ -72,8 +77,11 @@ int main() {
         std::cin >> menuInput;
         clearCIN(); //clear cin buffer
 
-        //TODO: make better keybindings. Maybe "esc" to exit, "a" to add and "v" to view?
 
+        //TODO: let tutors add tutees to keep track of
+        // - Tutors add new tutees, or select tutees they've already added
+        // - - when they select a tutee, num of sessions will go up when they add hours
+        // - - can view all sessions with that particular tutee
 
         switch(menuInput){
             case 1:
