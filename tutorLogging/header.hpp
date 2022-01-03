@@ -96,12 +96,17 @@ std::pair<std::string, std::string> breakTime(std::string inString, char delim){
 }
 
 void addNewSession(std::fstream &file){
-    std::string input;
-    std::string numInput;
-    std::cout << "Please enter what subject you tutored in: ";
-    std::getline(std::cin, input);
-    std::cout << "How many minutes was your session?: ";
-    std::getline(std::cin, numInput);
+    std::string input = "";
+    std::string numInput = "";
+    while(input == "") {
+        std::cout << "Please enter what subject you tutored in: ";
+        std::getline(std::cin, input);
+    }
+
+    while(numInput == "") {
+        std::cout << "How many minutes was your session?: ";
+        std::getline(std::cin, numInput);
+    }
 
     int hour = std::stoi(numInput) / 60;
     int min = std::stoi(numInput) % 60;
@@ -143,6 +148,18 @@ void listStudents(std::vector<student> &students){
     for (int i = 0; i < students.size(); ++i) {
         std::cout << i << " : " << students[i] << std::endl;
     }
+}
+
+void menuScreen(int &menuInput){
+    std::cout << "Tutoring Logging Tool" << std::endl;
+    std::cout << "-=-=-=-=-=-=-=-=-=-=-" << std::endl;
+    LOG(getDateTime());
+    std::cout << "1) Add new session" << std::endl;
+    std::cout << "2) Time new session" << std::endl;
+    std::cout << "3) Exit" << std::endl;
+    std::cout << ">> ";
+    std::cin >> menuInput;
+    clearCIN(); //clear cin buffer
 }
 
 #endif //TUTORLOGGING_HEADER_HPP

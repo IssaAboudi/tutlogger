@@ -14,6 +14,8 @@ public:
     std::string name = "";
     std::string subject = "";
     int numSessions = 0;
+    //TODO: total time tutoring
+    //TODO: Come up with more fields that might be useful to store
 
 
     friend std::ostream& operator<<(std::ostream &fs, const student &rval)  {

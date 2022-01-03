@@ -28,10 +28,16 @@ bool createFolder(const std::string &filePath);
 //All non-dependent definitions are found in:
 // files_all.cpp
 
+
+/* JSON FILES */
 void updateRecords(const std::string &filePath, std::vector<student> students);
 // stores tutee information locally (on disk)
 
 void loadRecords(const std::string &filePath, std::vector<student> &students);
 // loads in tutee information from disk
+
+/* TEXT FILES */
+void makeLog(const std::string &filePath, std::fstream &inputFile);
+//creates the log text file for tutors
 
 #endif //TUTORLOGGING_FILES_HPP
