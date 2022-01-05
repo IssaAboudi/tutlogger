@@ -4,4 +4,3 @@ project(tutorLogging)
 set(CMAKE_CXX_STANDARD 14)
 
 add_executable(tutorLogging main.cpp Files/files_windows.cpp Files/files_linux.cpp Student.hpp Files/files_all.cpp)
-target_link_libraries(tutorLogging -lglut -lglfw -lGLEW -lGL -lGLU)

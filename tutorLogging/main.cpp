@@ -49,6 +49,7 @@ int main() {
     //Create folder for our program to store data in (easily accessible by the user)
     std::string folder = getFilePath(); //stores OS specific file path (see function definition)
     //TODO: fix this -> if we already have a folder it will trigger this error. We want to check that the folder isn't there, not that we didn't make one
+    createFolder(folder);
 //    if(createFolder(folder) == false) { //actually makes the directory (OS Specific)
 //        std::cout << "Error code -999: Could not create Directory. Press enter to close" << std::endl;
 //        std::cin.get();

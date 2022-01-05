@@ -51,9 +51,10 @@ Status loadRecords(const std::string &filePath, std::vector<Student> &students){
     LOG("loadRecords: " << logFile);
 
     std::fstream newFile(logFile, std::ios::in);
-    if(newFile.fail()){
-        std::cout << "Error reading log file" << std::endl;
-        exit(-999);
+    if(newFile.fail()){ //if file fails to open
+        LOG("loadRecords: Error reading log file");
+        std::fstream newFile(logFile, std::ios::out | std::ios::in);
+        return EMPTY;
     }
     nlohmann::json tempJSON = nlohmann::json::array(); //json array to store data from file
     newFile >> tempJSON;

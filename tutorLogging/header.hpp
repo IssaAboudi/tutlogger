@@ -130,6 +130,8 @@ void addNewSession(std::fstream &file, float &time, Student* student){
     int hour = (int)time / 60;
     int min = (int)time % 60;
 
+    //TODO: add tutee name to the file
+    //TODO: write out total hours of tutoring
     file << getDate() << " : " << input << " - " << hour << " hour(s) and " << min << " minutes";
     file << std::endl;
 }
