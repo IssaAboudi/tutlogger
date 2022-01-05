@@ -1,20 +1,24 @@
-# tutlogger
-As an LPC tutor I needed a cleaner way to keep track of the sessions I've done on a particular day
+## TutLogger by (Matthew) Issa Aboudi
+As an LPC tutor I wanted a more convenient way to keep track of the tutees I have, and the sessions I have done on a particular day. Application is completely terminal based as of 1/5/2022 but I have plans to make this a cross platform GUI (graphical user interface) application.
 
-**Libraries used:**
+**Libraries & Toolkits used:**
 
 Nlohmann JSON library for saving and loading data locally (Found here: https://github.com/nlohmann/json)
 
-**You can build the project using the attached makefile**
-
 **Download:**
+The project includes a makefile which you can use to generate a linux executable - Mac and Windows not implemented as of 1/5/2022
 
 You can also download a precompiled executable under Releases
 https://github.com/IssaAboudi/tutlogger/releases
 
-As of 12/16/2021 there is only a Windows executable avaliable, I will add more soon
+### Changelog:
+> <strike>As of 12/16/2021 there is only a Windows executable and Linux executable avaliable, I will add more soon</strike>
 
-# Version 1.0.0 looks like:
+> As of 1/5/2022 there is an updated linux executable avaliable. Windows executable coming soon.
+
+----
+
+# Version 1.0.0 looks like: (OUTDATED! New Version Pictures coming soon)
 **Images:**
 ![Screenshot 2021-12-16 134728](https://user-images.githubusercontent.com/65807151/146454009-5de7d359-5ea8-400f-a606-610ba4643990.png)
 ![Screenshot 2021-12-16 134910](https://user-images.githubusercontent.com/65807151/146454129-55c41027-ba6c-4c36-be79-c9cb45943778.png)
