@@ -1,10 +1,7 @@
 #include "files.hpp"
 //Implementation for all platforms
 
-//TODO: fix function
-// - should return true if there are students in vector
-// - return false if vector is empty
-void updateRecords(const std::string &filePath, std::vector<student> students) {
+Status updateRecords(const std::string &filePath, std::vector<Student> students) {
     //store tutee information locally on disk
     std::string logFile = filePath;
     logFile += "/students.json";
@@ -24,21 +21,28 @@ void updateRecords(const std::string &filePath, std::vector<student> students) {
         nlohmann::json data;
         nlohmann::json header;
 
+        //Store data in JSON format
         data["Subject"] = students[i].subject;
         data["#ofSessions"] = students[i].numSessions;
-        header[students[i].name] = data;
+        data["Total Time"] = students[i].time;
+
+        header[students[i].name] = data; //creates header to contain the data organized above
         studentArray.push_back(header);
     }
 
     newFile << std::setw(4) << studentArray;
     LOG("Updated Log File");
     newFile.close();
+
+    if(students.size() < 1){
+        return EMPTY;
+    } else {
+        return FILLED;
+    }
+
 }
 
-//TODO: fix function
-// - should return true if there are students in the file to pull from
-// - return false if empty
-void loadRecords(const std::string &filePath, std::vector<student> &students){
+Status loadRecords(const std::string &filePath, std::vector<Student> &students){
     //pull tutee data from disk to vector students
     std::string logFile = filePath;
     logFile += "/students.json";
@@ -54,16 +58,28 @@ void loadRecords(const std::string &filePath, std::vector<student> &students){
     nlohmann::json tempJSON = nlohmann::json::array(); //json array to store data from file
     newFile >> tempJSON;
     for(int i = 0; i < tempJSON.size(); i++) { //loop through each json element in the array
-        for(auto &x : tempJSON.at(i).items()){ //iterate through each JSON element
-            student newStudent;
+        for(auto &x : tempJSON.at(i).items()){ //iterate through each JSON element like a map
+            Student newStudent;
             newStudent.name = x.key(); //extract the key
             LOG("loadRecords: " << newStudent.name);
+
+            //Pulls data from JSON file by accessing each entry
             newStudent.subject = x.value()["Subject"];
             newStudent.numSessions = x.value()["#ofSessions"];
+            newStudent.time = x.value()["Total Time"];
+            //TODO: Pull other data (TO BE IMPLEMENTED)
+
             students.push_back(newStudent);
         }
     }
-    LOG(students.size());
+    LOG("loadRecords: " << students.size());
+
+    if(students.size() < 1){
+        return EMPTY; //If there is nothing in the file
+    } else {
+        return FILLED; //if there is stuff in the file
+    }
+
 }
 
 void makeLog(const std::string &filePath, std::fstream &inputFile){

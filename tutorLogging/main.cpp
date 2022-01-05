@@ -13,22 +13,24 @@
 //======================================================
 
 
+void addTutee(const std::string &filePath, std::vector<Student> &students);
+
 void unitTest(){
     //currently trying to develop using the JSON library
     // -- writing out to a file with updateRecords()
     // -- reading in a file with loadRecords()
 
-    student newStudent;
+    Student newStudent;
     newStudent.name = "Test1";
     newStudent.subject = "Subject1";
-    student newStudent1;
+    Student newStudent1;
     newStudent1.name = "Test2";
     newStudent1.subject = "Subject2";
-    student newStudent2;
+    Student newStudent2;
     newStudent2.name = "Test3";
     newStudent2.subject = "Subject3";
 
-    std::vector<student> students;
+    std::vector<Student> students;
     students.push_back(newStudent);
     students.push_back(newStudent1);
     students.push_back(newStudent2);
@@ -36,9 +38,8 @@ void unitTest(){
     std::string filePath = getFilePath();
     updateRecords(filePath, students);
 
-    std::vector<student> readIn;
+    std::vector<Student> readIn;
     loadRecords(filePath, readIn);
-
     listStudents(readIn);
 
 }
@@ -56,31 +57,57 @@ int main() {
 
     std::fstream tutoringFile; //to reference the text file
     int menuInput; //userInput for the menu
-    std::vector<student> tutees;
+    std::vector<Student> tutees; //vector of students
+    Student* student = nullptr; //specific Student we want to reference
+    bool firstRun = false;
 
+    loadRecords(folder, tutees); //read in Student data from JSON file
     makeLog(folder, tutoringFile); //opens the log file for editing - if it doesn't exists, creates it.
 
     do {
-        menuScreen(menuInput); //menu for tutlogger application & selection
+        if(tutees.size() < 1){
+            std::cout << "Need to add a Tutee before proceeding" << std::endl;
+            addTutee(folder, tutees);
+        } else if(firstRun == false){
+            listStudents(tutees);
+            firstRun = true;
+        }
 
-        //TODO: let tutors add tutees to keep track of
-        // - Tutors add new tutees, or select tutees they've already added
-        // - - when they select a tutee, num of sessions will go up when they add hours
-        // - - can view all sessions with that particular tutee
+        //menu for tutlogger application & selection //TODO: make this a function
+        std::cout << "Tutoring Logging Tool" << std::endl;
+        std::cout << "-=-=-=-=-=-=-=-=-=-=-" << std::endl;
+        LOG(getDateTime());
+        std::cout << "1) Add new session" << std::endl;
+        std::cout << "2) Time new session" << std::endl;
+        std::cout << "3) Add new Tutee" << std::endl;
+        std::cout << "4) List all Tutees" << std::endl;
+        std::cout << "5) Exit" << std::endl;
+        std::cout << ">> ";
+        std::cin >> menuInput;
+        clearCIN(); //clear cin buffer
+
 
         switch(menuInput){
             case 1:
-                //TODO: Select tutee to update information of
-                // - might need to adjust addNewSession and timeSession functions
-                // - to include a reference to the student object we're modifying
-                addNewSession(tutoringFile);
+                student = selectTutee(tutees); //returns pointer to specific tutee we are working with in vector
+                addNewSession(tutoringFile, student); //manually enter session details
+                updateRecords(folder, tutees); //apply changes to the JSON file
                 break;
             case 2:
-                timeSession(tutoringFile);
+                student = selectTutee(tutees); //returns pointer to specific tutee we are working with in vector
+                timeSession(tutoringFile, student); //begins a timer
+                updateRecords(folder, tutees); //apply changes to the JSON file
+                break;
+            case 3:
+                addTutee(folder, tutees);
+                break;
+            case 4:
+                listStudents(tutees); //displays students in vector
                 break;
         }
-    } while(menuInput != 3);
+    } while(menuInput != 5);
 
+    //TODO: Separate entries by day rather than program runs
     tutoringFile << "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << std::endl; //divide different program runs
 
 

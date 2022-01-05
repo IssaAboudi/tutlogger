@@ -95,19 +95,23 @@ std::pair<std::string, std::string> breakTime(std::string inString, char delim){
     return finalPair;
 }
 
-void addNewSession(std::fstream &file){
+void addNewSession(std::fstream &file, Student* student){
     std::string input = "";
     std::string numInput = "";
     while(input == "") {
-        std::cout << "Please enter what subject you tutored in: ";
+        std::cout << "Please enter what subject you tutored in: "; //this could be unneccessary if everything is contained to Student objects
         std::getline(std::cin, input);
     }
-
     while(numInput == "") {
         std::cout << "How many minutes was your session?: ";
         std::getline(std::cin, numInput);
     }
 
+    //edit student attributes;
+    student->time += std::stoi(numInput);
+    student->numSessions++;
+
+    std::cout << "Time is: " << student->time << std::endl;
     int hour = std::stoi(numInput) / 60;
     int min = std::stoi(numInput) % 60;
 
@@ -115,10 +119,13 @@ void addNewSession(std::fstream &file){
     file << std::endl;
 }
 
-void addNewSession(std::fstream &file, float &time){
+void addNewSession(std::fstream &file, float &time, Student* student){
     std::string input;
     std::cout << "Please enter what subject you tutored in: ";
     std::getline(std::cin, input);
+
+    student->time += time;
+    student->numSessions++;
 
     int hour = (int)time / 60;
     int min = (int)time % 60;
@@ -127,7 +134,7 @@ void addNewSession(std::fstream &file, float &time){
     file << std::endl;
 }
 
-void timeSession(std::fstream &file){
+void timeSession(std::fstream &file, Student* student){
     std::chrono::system_clock::time_point start;
     std::chrono::system_clock::time_point end;
     std::string input;
@@ -139,27 +146,65 @@ void timeSession(std::fstream &file){
 
     std::chrono::duration<float> duration = end - start; //calculate duration
     float minutes = std::chrono::duration_cast<std::chrono::seconds>(duration).count() / 60;
-    LOG(minutes);
+    LOG("timeSession: " << minutes);
 
-    addNewSession(file, minutes); //adds to log file
+    addNewSession(file, minutes, student); //adds to log file
 }
 
-void listStudents(std::vector<student> &students){
-    for (int i = 0; i < students.size(); ++i) {
+void addTutee(const std::string &filePath, std::vector<Student> &students) {
+    std::string input;
+    Student temp;
+
+    SPACER();
+
+    std::cout << "Add Tutee: " << std::endl;
+    std::cout << "-=-=-=-=-=-" << std::endl;
+    std::cout << "Enter Tutee name: ";
+    std::getline(std::cin, input);
+    temp.name = input;
+
+    std::cout << "Enter Tutee Subject: "; //TODO: Make this more robust - what about multiple subjects?
+    std::getline(std::cin, input);
+    temp.subject = input;
+
+    students.push_back(temp);
+    updateRecords(filePath, students);
+
+    SPACER();
+}
+
+void listStudents(std::vector<Student> &students){
+    if(students.size() < 1){
+        return;
+    }
+    SPACER();
+    std::cout << "Your Tutees" << std::endl;
+    std::cout << "-=-=-=-=-=-" << std::endl;
+    for (int i = 0; i < students.size(); i++) {
         std::cout << i << " : " << students[i] << std::endl;
     }
+    SPACER();
 }
 
-void menuScreen(int &menuInput){
-    std::cout << "Tutoring Logging Tool" << std::endl;
-    std::cout << "-=-=-=-=-=-=-=-=-=-=-" << std::endl;
-    LOG(getDateTime());
-    std::cout << "1) Add new session" << std::endl;
-    std::cout << "2) Time new session" << std::endl;
-    std::cout << "3) Exit" << std::endl;
+Student* selectTutee(std::vector<Student> &students){
+    int menuInput;
+    Student* student;
+
+    listStudents(students);
+    std::cout << "Please select a tutee for the session: " << std::endl;
     std::cout << ">> ";
     std::cin >> menuInput;
-    clearCIN(); //clear cin buffer
+    clearCIN();
+
+    SPACER();
+
+    student = &students[menuInput];
+    return student;
 }
+
+//TODO: add edit tutee function
+// - tutor should be able to correct or adjust any attributes of their students
+// - Won't affect the actual log but will correct data stored about tutee
+// - - Like # of sessions. If accidentally added an extra session, they can correct that
 
 #endif //TUTORLOGGING_HEADER_HPP

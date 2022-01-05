@@ -9,21 +9,21 @@
 #define ON 1
 //-=-=-=-=-=-=-=-=-=-=-=//
 //Quick Logging
-#define DEBUG ON
+#define DEBUG OFF
 
 //Release Mode toggle
 #define RELEASE OFF
 
 //Unit Test Mode toggle
-#define UNIT_TEST ON
+#define UNIT_TEST OFF
 
 //-=-=-=-=-=-=-=-=-=-=-=//
 #if DEBUG == ON
 #define LOG(X) std::cout << X << std::endl
-#define SPACER() std::cout << std::endl
 #elif DEBUG == OFF
 #define LOG(X)
-#define SPACER()
 #endif
+
+#define SPACER() std::cout << std::endl
 
 #endif //TUTORLOGGING_DEBUGMODE_HPP

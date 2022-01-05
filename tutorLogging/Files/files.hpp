@@ -7,7 +7,11 @@
 #include <fstream>
 #include "../DebugMode.hpp"
 #include "../Ext/json.hpp"
-#include "../student.hpp"
+#include "../Student.hpp"
+
+enum Status {
+    EMPTY = 0, FILLED
+};
 
 //Function definition depends on operating systems.
 //See:
@@ -30,10 +34,10 @@ bool createFolder(const std::string &filePath);
 
 
 /* JSON FILES */
-void updateRecords(const std::string &filePath, std::vector<student> students);
+Status updateRecords(const std::string &filePath, std::vector<Student> students);
 // stores tutee information locally (on disk)
 
-void loadRecords(const std::string &filePath, std::vector<student> &students);
+Status loadRecords(const std::string &filePath, std::vector<Student> &students);
 // loads in tutee information from disk
 
 /* TEXT FILES */
