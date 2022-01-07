@@ -14,7 +14,9 @@ https://github.com/IssaAboudi/tutlogger/releases
 ### Changelog:
 > <strike>As of 12/16/2021 there is only a Windows executable and Linux executable avaliable, I will add more soon</strike>
 
-> As of 1/5/2022 there is an updated linux executable avaliable. Windows executable coming soon.
+>  <strike> As of 1/5/2022 there is an updated linux executable avaliable. Windows executable coming soon. </strike>
+
+> As of 1/6/2022 there is both Windows and Linux executables avaliable under Releases
 
 ----
 
