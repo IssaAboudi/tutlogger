@@ -115,7 +115,7 @@ void addNewSession(std::fstream &file, Student* student){
     int hour = std::stoi(numInput) / 60;
     int min = std::stoi(numInput) % 60;
 
-    file << getDate() << " : " << input << " - " << hour << " hour(s) and " << min << " minutes";
+    file << getDate() << " : " << student->name << " -> " << input << " - " << hour << " hour(s) and " << min << " minutes";
     file << std::endl;
 }
 
@@ -132,7 +132,7 @@ void addNewSession(std::fstream &file, float &time, Student* student){
 
     //TODO: add tutee name to the file
     //TODO: write out total hours of tutoring
-    file << getDate() << " : " << input << " - " << hour << " hour(s) and " << min << " minutes";
+    file << getDate() << " : " << student->name << " -> " << input << " - " << hour << " hour(s) and " << min << " minutes";
     file << std::endl;
 }
 
