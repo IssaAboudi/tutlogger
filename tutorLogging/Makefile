@@ -1,7 +1,9 @@
+#Easy to build makefile for this project (not platform specific as of Janurary 2022)
+
 tutlogger: main.o Files/files_linux.o Files/files_windows.o Files/files_all.o
 	g++ *.o -o tutoring.sh
 
-main.o: main.cpp DebugMode.hpp Files/files.hpp
+main.o: Application.cpp DebugMode.hpp Files/files.hpp
 	g++ -c main.cpp
 
 Files/files_linux.o: Files/files_linux.cpp

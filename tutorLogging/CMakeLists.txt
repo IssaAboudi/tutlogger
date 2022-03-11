@@ -3,4 +3,21 @@ project(tutorLogging)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(tutorLogging main.cpp Files/files_windows.cpp Files/files_linux.cpp Student.hpp Files/files_all.cpp)
+find_package(glfw3 CONFIG REQUIRED)
+find_package(glad CONFIG REQUIRED)
+
+add_subdirectory(Ext/imgui)
+
+set(FILES
+        Files/files_windows.cpp
+        Files/files_linux.cpp
+        Files/files_all.cpp)
+
+set(APPLICATION
+        Application.cpp
+        Application.hpp
+        DebugMode.hpp)
+
+add_executable(tutorLogging Ext/imgui/main.cpp ${APPLICATION} ${FILES} )
+
+target_link_libraries(tutorLogging glad::glad glfw imgui_setup)

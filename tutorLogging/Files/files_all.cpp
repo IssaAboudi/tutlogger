@@ -73,7 +73,7 @@ Status loadRecords(const std::string &filePath, std::vector<Student> &students){
             students.push_back(newStudent);
         }
     }
-    LOG("loadRecords: " << students.size());
+    LOG("loadRecords: # of students " << students.size());
 
     if(students.size() < 1){
         return EMPTY; //If there is nothing in the file

@@ -25,7 +25,7 @@ std::string getFilePath();
 
 //creates a folder in provided filepath
 bool createFolder(const std::string &filePath);
-//TODO: add Windows and Mac Implementation
+//TODO: add Mac Implementation
 
 //===============================================
 

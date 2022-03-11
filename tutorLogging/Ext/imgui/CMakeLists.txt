@@ -1,0 +1,14 @@
+add_library(imgui_setup
+        main.cpp
+        imgui_impl_opengl3.h
+        imgui_impl_opengl3.cpp
+        imgui_impl_opengl3_loader.h
+        imgui_impl_glfw.h
+        imgui_impl_glfw.cpp
+        imgui.h
+        imgui.cpp
+        imgui_draw.cpp
+        imgui_tables.cpp
+        imgui_widgets.cpp
+        imgui_demo.cpp
+        )

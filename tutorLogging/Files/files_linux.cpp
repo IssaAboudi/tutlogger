@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#include <errno.h>
 
 std::string getFilePath(){
     LOG("getFilePath: " << "On Linux");
@@ -18,7 +19,7 @@ std::string getFilePath(){
     filePath += userName;
     filePath += "/Documents/tutlogger";
 #else
-   std::string filePath = "../Documents";
+   std::string filePath = "./Documents";
 #endif
 
     return filePath;
@@ -27,14 +28,22 @@ std::string getFilePath(){
 bool createFolder(const std::string &filePath) {
     const char * fp = filePath.c_str();
 
-    if(mkdir(fp, 0777) == -1){
-        LOG("createFolder:" << "Couldn't create folder");
-        return false;
-    } else {
-        LOG("createFolder:" << "Created folder");
-        return true;
+    bool isThere = false;
+
+    if(mkdir(fp, 0777) != -1){ //if could create a folder, yay
+        LOG("createFolder: Creating Folder");
+        isThere = true; //yes we created a folder
+    } else if(errno == EEXIST) { //if folder already there
+        LOG("createFolder: Folder already exists");
+        isThere = true;
+    }else { //if couldn't create a folder
+        LOG("createFolder: Unexpected Error Creating Folder");
+        isThere = false;
     }
+
+    return isThere;
 }
+
 
 
 #endif

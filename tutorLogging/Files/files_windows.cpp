@@ -23,13 +23,17 @@ std::string getFilePath(){
 
 bool createFolder(const std::string &filePath){
     const char * fp = filePath.c_str();
+    bool isThere = false;
 
-    if(mkdir(fp) == -1){
-        LOG("Couldn't create folder");
-        return false;
+    if(mkdir(fp) != -1){
+        LOG("createFolder: Creating Folder");
+        isThere = true; //yes we created a folder
+    } else if(eerno == EEXIST){
+        LOG("createFolder: Folder already exists");
+        isThere = true;
     } else {
-        LOG("Created folder");
-        return true;
+        LOG("createFolder: Unexpected Error Creating Folder");
+        isThere = false;
     }
 
 }

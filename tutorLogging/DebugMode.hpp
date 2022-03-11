@@ -9,12 +9,12 @@
 #define ON 1
 //-=-=-=-=-=-=-=-=-=-=-=//
 //Quick Logging
-#define DEBUG OFF
+#define DEBUG ON
 
-//Release Mode toggle
+//Release Mode toggle (Computer specific file paths)
 #define RELEASE OFF
 
-//Unit Test Mode toggle
+//Unit Test Mode toggle (Unit Test Function)
 #define UNIT_TEST OFF
 
 //-=-=-=-=-=-=-=-=-=-=-=//
