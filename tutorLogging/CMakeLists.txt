@@ -16,7 +16,8 @@ set(FILES
 set(APPLICATION
         Application.cpp
         Application.hpp
-        DebugMode.hpp)
+        DebugMode.hpp
+        )
 
 add_executable(tutorLogging Ext/imgui/main.cpp ${APPLICATION} ${FILES} )
 

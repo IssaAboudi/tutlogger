@@ -100,11 +100,15 @@ int main(int, char**)
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    std::vector<Student> tutees; //vector of students
-    Student* student = nullptr; //specific Student we want to reference
+    std::vector<Student> tutees; //Will store all the tutees we have during runtime.
+    // - filled when we start the application in processFiles()
+
+    Student* f_tutees[NUM_ACTIVE_STUDENTS]; //pointer to tutee objects in vector that we've modified/edited
+    // - Lets us adjust and print log for all the tutees modified only.
+    // - 20 students can be modified at a time, probably plenty but can be changed in macro.
 
     //Do stuff with my program before the loop
-    tutlogger::processFiles(tutees);
+    tutlogger::processFiles(tutees); //load all data from JSON file
 
 
     // Main loop
@@ -125,7 +129,7 @@ int main(int, char**)
 //        tutlogger::tutorialWindow();
 
 //      [APPLICATION WINDOW]
-        tutlogger::createWindow(tutees);
+        tutlogger::createWindow(tutees, f_tutees);
 
         // Rendering
         ImGui::Render();

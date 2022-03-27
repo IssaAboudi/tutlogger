@@ -76,6 +76,7 @@ Status loadRecords(const std::string &filePath, std::vector<Student> &students){
     LOG("loadRecords: # of students " << students.size());
 
     if(students.size() < 1){
+        LOG("loadRecords: ERROR: No tutees modified yet");
         return EMPTY; //If there is nothing in the file
     } else {
         return FILLED; //if there is stuff in the file

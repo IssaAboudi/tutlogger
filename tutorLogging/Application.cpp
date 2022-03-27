@@ -1,6 +1,8 @@
-#include "Files/files.hpp"
+
 #include "Application.hpp"
-#include "Ext/imgui/imgui.h"
+
+#define PADDING ImGui::NewLine()
+#define SEPARATOR ImGui::Separator()
 
 //======================================================
 /*
@@ -15,6 +17,7 @@
 //======================================================
 
 namespace tutlogger {
+    static int f_numTutees = 0; //keeps track of number of tutees modified (to update to the file)
 
     void processFiles(std::vector<Student> &tutees){
         //Create folder for our program to store data in (easily accessible by the user)
@@ -32,11 +35,13 @@ namespace tutlogger {
 
         loadRecords(folder, tutees); //read in Student data from JSON file
         makeLog(folder, tutoringFile); //opens the log file for editing - if it doesn't exists, creates it.
+
+        tutoringFile.close(); //close file when loaded data.
     }
 
 
 
-    void createWindow(std::vector<Student>&tutees){ //handles the onscreen windows - within while loop
+    void createWindow(std::vector<Student>&tutees, Student** f_tutees){ //handles the onscreen windows - within while loop
 
         static bool opt_fullscreen = true;
         static bool opt_padding = false;
@@ -101,53 +106,67 @@ namespace tutlogger {
 
         ImGui::End();
 
-
-        static int checked = 0;
-        static bool tuteeCheck[7];
-
         static std::chrono::system_clock::time_point start;
         static std::chrono::system_clock::time_point end;
 
-        static int tempMin; //enter
+
 
 //        static char names[32];
 
-        ImGui::Begin("Main Application");
+        ImGui::Begin("Main Application"); //Application Window
 
-        ImGui::Text("Tutor Logging Tool");
+        ImGui::Text("Tutor Logging Tool"); //Title
         ImGui::Text("==================");
 
         //[Add Session] - First Button
+        //============================
+
+        //variables for first button:
+        static int checked = 0; //Which student of tutees we are currently working on
+        static bool b_tutees[50]; //Unlikely to have more than 50 students at this scale - can scale that up later?
+        static int tempMin; //locally enter time
+
         if(ImGui::Button("1) Add new session")){
             ImGui::OpenPopup("newSession");
         }
         if (ImGui::BeginPopup("newSession", ImGuiWindowFlags_NoTitleBar)) {
             ImGui::Text("Select tutee:");
             ImGui::Separator();
-            for (int i = 0; i < tutees.size(); ++i) { //displays all of the current tutees
+            for (int i = 0; i < tutees.size(); ++i) { //displays all of the tutees
                 if(ImGui::Button(tutees[i].name.c_str(), ImVec2(140, 30))) {
-                    checked = i; //store the current one clicked
-                    tuteeCheck[i] = true;
+                    checked = i; //store the index of the tutee selected (matches with index in parallel bool array)
+                    b_tutees[i] = true; //mark true for tutee at that index in parallel bool array
                 }
             }
             ImGui::EndPopup();
         }
-        if(tuteeCheck[checked]){
-            ImGui::Text("Enter Hours Logged (min): ");
+        if(b_tutees[checked]){
+            ImGui::Text("Enter Hours Logged (min) for");
+            ImGui::SameLine(); ImGui::Text(tutees[checked].name.c_str());
+            ImGui::SameLine(); ImGui::Text(": ");
             ImGui::InputInt("##Hours", &tempMin, 10); //go up 10 minutes at a time
-            if(ImGui::Button("Done") || ImGui::IsKeyPressed(525)){ //525 is the enter key
-                LOG("CreateWindow: Before add " << tutees[checked].time);
-                tutees[checked].time += abs(tempMin); //add hours entered to student member TODO: push it back to the JSON and Text
-                LOG("CreateWindow: " << tutees[checked].name << " hour added: " << abs(tempMin));
-                LOG("CreateWindow: After add " << tutees[checked].time);
-                tuteeCheck[checked] = false; //reset - collapses the entry field
+//            ImGui::NewLine(); ImGui::SameLine(400); //offset the Done Button
+            if(ImGui::Button("Done", ImVec2(480, 40)) || ImGui::IsKeyPressed(525)){ //525 is the enter key
+                LOG("CreateWindow: Before add " << tutees[checked].tempTime);
+                tutees[checked].tempTime += abs(tempMin); //add hours entered to student member TODO: push it back to the JSON and Text
+                LOG("CreateWindow: " << tutees[checked].tempTime << " hour added: " << abs(tempMin));
+                LOG("CreateWindow: After add " << tutees[checked].tempTime);
+
+                f_tutees[f_numTutees] = &tutees[checked]; //reference tutees updated to put in the file
+                f_numTutees++; //move forwards an index
+
+                b_tutees[checked] = false; //reset - collapses the entry field
                 tempMin = 0; //reset value to 0 (so everyone starts at 0);
             }
         }
 
         //[Time Session] - Second Button
+        //==============================
+
         if(ImGui::Button("2) Time session")){
+            //TODO: after timing session we need to select tutee to apply time recorded to
             ImGui::OpenPopup("Time Session");
+
         }
 
         ImVec2 center = ImGui::GetMainViewport()->GetCenter();
@@ -165,7 +184,7 @@ namespace tutlogger {
             //Start Button
             ImGui::SameLine(100);
             ImGui::BeginGroup();
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0,80,0,100));
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0,80,0,100)); //TODO: Change Color on Press & Disable Press (START)
             if(ImGui::Button("Start", ImVec2(100, 40))){
                 startPress = true;
             }
@@ -173,7 +192,7 @@ namespace tutlogger {
 
             //Stop Button
             ImGui::SameLine(200);
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(100,0,0,100));
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(100,0,0,100)); //TODO: Change Color on Press & Disable Press (END)
             if(ImGui::Button("Stop", ImVec2(100, 40))){
                 stopPress = true;
             }
@@ -193,34 +212,151 @@ namespace tutlogger {
 
             float minutes = 0.0;
             std::chrono::duration<float> duration = end - start; //calculate duration
-//            minutes = std::chrono::duration_cast<std::chrono::seconds>(duration).count();
+#if DEBUG == ON
+            minutes = std::chrono::duration_cast<std::chrono::seconds>(duration).count(); //really seconds
+#elif DEBUG == OFF
             minutes = std::chrono::duration_cast<std::chrono::seconds>(duration).count() / 60;
+#endif
             ImGui::Text(std::to_string(minutes).c_str());
             //TODO: Fix output & use this to write to files
             // - ImGui::Text doesn't like cstrings
 
 
+
             ImGui::SameLine(500);
-            if (ImGui::Button("Exit", ImVec2(120, 40))) { ImGui::CloseCurrentPopup(); } //exit
+            if (ImGui::Button("Exit", ImVec2(120, 40))) {
+                ImGui::CloseCurrentPopup();
+                LOG("CreateWindow: Minutes at Close " << minutes );
+            } //exit
             ImGui::EndPopup();
         }
 
+        //[Add Tutee] - Third Button
+        //==========================
+
+
         if(ImGui::Button("3) Add new Tutee")){
-
+            ImGui::OpenPopup("Add Tutee");
         }
-        if(ImGui::Button("4) List all Tutees")){
+        if(ImGui::BeginPopupModal("Add Tutee", NULL, ImGuiWindowFlags_AlwaysAutoResize)){
+            static char name[64] = "";
+            static char subject[64] = "";
 
+
+            ImGui::Text("Enter tutee Name and Subject");
+            SEPARATOR;
+            PADDING;
+
+            //Label and Text Input for adding new tutee
+            ImGui::Text("Name:"); ImGui::InputText("##", name, 64);
+            PADDING;
+            ImGui::Text("Subject:"); ImGui::InputText("###", subject, 64);
+
+            //Vertical Padding between text input and buttons
+            PADDING; PADDING;
+
+            ImGui::SameLine(15);
+            //Exit popup without adding new tutee / Discard Changes
+            if (ImGui::Button("Exit", ImVec2(120, 40))) {
+                ImGui::CloseCurrentPopup();
+            }
+
+            //Add new tutee and close popup / Apply Changes
+            ImGui::SameLine(220);
+            if (ImGui::Button("Apply", ImVec2(120, 40))) {
+                Student tempStudent; //make new student
+                tempStudent.name = name; //copy name
+                tempStudent.subject = subject; //copy subject
+
+                tutees.push_back(tempStudent);//add it to the vector of all students
+                ImGui::CloseCurrentPopup();
+            } //Apply
+
+
+            ImGui::EndPopup();
+        }
+
+        //[List Tutees] - Fourth Button
+        //=============================
+        //variables for fourth button:
+        static int listButton = 0;
+
+        if(ImGui::Button("4) List all Tutees")){
+            listButton++;
+        }
+        if(listButton & 1){
+            for (int i = 0; i < tutees.size(); ++i) { //displays all of the current tutees
+                ImGui::Text(tutees[i].name.c_str());
+            }
+        }
+
+        if(ImGui::Button("5) Update Log")){
+            updateFile(f_tutees, tutees);
         }
 
         ImGui::End();
-
-//        ImGui::Begin("Demo");
-//        ImGui::Dummy(ImVec2(200,200));
-//        ImGui::End();
         ImGui::ShowDemoWindow();
     }
 
-// This is just for reference - not actually used
+    Status updateFile(Student** f_tutees, std::vector<Student>&tutees){
+        std::string txt = getFilePath();
+        std::string json = txt;
+        txt += "/tutoringLog.txt";
+        json += "/students.json";
+        std::fstream tutoringFile(txt, std::fstream::app); //open the txt file to update first:
+
+        int hour;
+        int min;
+
+        //Writes out to the text file
+        for (int i = 0; i < f_numTutees; i++) {
+            hour = f_tutees[i]->tempTime / 60; // extract hours
+            min = f_tutees[i]->tempTime % 60;  // extract minutes
+            tutoringFile << f_tutees[i]->name << " | " << getDate() << " : " << f_tutees[i]->subject
+            << " - " << hour << " hour(s) and " << min << " minutes" << std::endl;
+
+            f_tutees[i]->time += f_tutees[i]->tempTime; //add time to total time
+            f_tutees[i]->tempTime = 0; //reset tempTime to 0
+        }
+
+        tutoringFile.close(); //close previous file
+        tutoringFile.open(json, std::ios::out); //open the json file
+
+        //Write out to the json file
+        nlohmann::json studentArray = nlohmann::json::array(); //json array to store data to file
+        for(int i = 0; i < tutees.size(); i++){
+            nlohmann::json data;
+            nlohmann::json header;
+
+            //Store data in JSON format
+            data["Subject"] = tutees[i].subject;
+            data["#ofSessions"] = tutees[i].numSessions;
+            data["Total Time"] = tutees[i].time;
+
+            //Put data under header:
+            header[tutees[i].name] = data; //creates header for data organized.
+            studentArray.push_back(header); //All data under "header" now, push into total array
+
+        }
+        tutoringFile << std::setw(4) << studentArray;
+        LOG("updateFile: Updated JSON file");
+        tutoringFile.close(); // done with the file
+
+        // Once we write out everything to the files, we can reset the temporary array:
+        for (int i = 0; i < f_numTutees; i++) {
+            f_tutees[i] = nullptr;
+        }
+
+        if(f_numTutees < 1){
+            LOG("updateFile: ERROR: No tutees modified yet");
+            return EMPTY;
+        } else {
+            return FILLED;
+        }
+
+    }
+
+    // This is just for reference - not actually used
     void tutorialWindow() {
 
         //Our state
@@ -265,7 +401,9 @@ namespace tutlogger {
             ImGui::End();
         }
     }
-}
+} //end of namespace
+
+//DEPRICATED:
 
 void unitTest(){
     //Testing here

@@ -16,10 +16,13 @@ public:
                               // - for now ignore this
     int numSessions = 0;
     int time = 0; //store total time in minutes;
+    int tempTime = 0;
     //TODO: When getting total time with Student format in Hours & minutes
     //TODO: Come up with more fields that might be useful to store
 
     //Maybe?
+//    int hours = 0;
+//    int min = 0;
     //TODO: Add Minutes & Hours components to update individually?
 
     friend std::ostream& operator<<(std::ostream &fs, const Student &rval)  {

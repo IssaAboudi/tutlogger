@@ -13,15 +13,21 @@
 #include <vector>
 #include <cstring>
 #include "Student.hpp"
+#include "Files/files.hpp"
+#include "Ext/imgui/imgui.h"
  #include "DebugMode.hpp"
+
+#define NUM_ACTIVE_STUDENTS 20
 
 
 namespace tutlogger {
     void processFiles(std::vector<Student> &tutees);
 
-    void createWindow(std::vector<Student> &tutees);
+    void createWindow(std::vector<Student> &tutees, Student** f_tutees);
 
     void tutorialWindow();
+
+    Status updateFile(Student** f_tutees, std::vector<Student>&tutees);
 }
 
 void clearCIN(void);
