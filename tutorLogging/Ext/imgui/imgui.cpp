@@ -84,7 +84,7 @@ CODE
 // [SECTION] DOCKING
 // [SECTION] PLATFORM DEPENDENT HELPERS
 // [SECTION] METRICS/DEBUGGER WINDOW
-// [SECTION] OTHER DEBUG TOOLS (ITEM PICKER, STACK TOOL)
+// [SECTION] OTHER LOGGING TOOLS (ITEM PICKER, STACK TOOL)
 
 */
 
@@ -3633,7 +3633,7 @@ bool ImGui::ItemHoverable(const ImRect& bb, ImGuiID id)
 
     if (id != 0)
     {
-        // [DEBUG] Item Picker tool!
+        // [LOGGING] Item Picker tool!
         // We perform the check here because SetHoveredID() is not frequently called (1~ time a frame), making
         // the cost of this tool near-zero. We can get slightly better call-stack and support picking non-hovered
         // items if we perform the test in ItemAdd(), but that would incur a small runtime cost.
@@ -4605,7 +4605,7 @@ void ImGui::NewFrame()
     // Docking
     DockContextNewFrameUpdateDocking(&g);
 
-    // [DEBUG] Update debug features
+    // [LOGGING] Update debug features
     UpdateDebugToolItemPicker();
     UpdateDebugToolStackQueries();
 
@@ -6265,8 +6265,8 @@ void ImGui::RenderWindowTitleBarContents(ImGuiWindow* window, const ImRect& titl
             clip_r.Max.x = ImMin(clip_r.Max.x, marker_pos.x - (int)(marker_size_x * 0.5f));
         }
     }
-    //if (g.IO.KeyShift) window->DrawList->AddRect(layout_r.Min, layout_r.Max, IM_COL32(255, 128, 0, 255)); // [DEBUG]
-    //if (g.IO.KeyCtrl) window->DrawList->AddRect(clip_r.Min, clip_r.Max, IM_COL32(255, 128, 0, 255)); // [DEBUG]
+    //if (g.IO.KeyShift) window->DrawList->AddRect(layout_r.Min, layout_r.Max, IM_COL32(255, 128, 0, 255)); // [LOGGING]
+    //if (g.IO.KeyCtrl) window->DrawList->AddRect(clip_r.Min, clip_r.Max, IM_COL32(255, 128, 0, 255)); // [LOGGING]
     RenderTextClipped(layout_r.Min, layout_r.Max, name, NULL, &text_size, style.WindowTitleAlign, &clip_r);
 }
 
@@ -8842,14 +8842,14 @@ void ImGui::ItemSize(const ImVec2& size, float text_baseline_y)
     const float line_height = ImMax(window->DC.CurrLineSize.y, size.y + offset_to_match_baseline_y);
 
     // Always align ourselves on pixel boundaries
-    //if (g.IO.KeyAlt) window->DrawList->AddRect(window->DC.CursorPos, window->DC.CursorPos + ImVec2(size.x, line_height), IM_COL32(255,0,0,200)); // [DEBUG]
+    //if (g.IO.KeyAlt) window->DrawList->AddRect(window->DC.CursorPos, window->DC.CursorPos + ImVec2(size.x, line_height), IM_COL32(255,0,0,200)); // [LOGGING]
     window->DC.CursorPosPrevLine.x = window->DC.CursorPos.x + size.x;
     window->DC.CursorPosPrevLine.y = window->DC.CursorPos.y;
     window->DC.CursorPos.x = IM_FLOOR(window->Pos.x + window->DC.Indent.x + window->DC.ColumnsOffset.x);    // Next line
     window->DC.CursorPos.y = IM_FLOOR(window->DC.CursorPos.y + line_height + g.Style.ItemSpacing.y);        // Next line
     window->DC.CursorMaxPos.x = ImMax(window->DC.CursorMaxPos.x, window->DC.CursorPosPrevLine.x);
     window->DC.CursorMaxPos.y = ImMax(window->DC.CursorMaxPos.y, window->DC.CursorPos.y - g.Style.ItemSpacing.y);
-    //if (g.IO.KeyAlt) window->DrawList->AddCircle(window->DC.CursorMaxPos, 3.0f, IM_COL32(255,0,0,255), 4); // [DEBUG]
+    //if (g.IO.KeyAlt) window->DrawList->AddCircle(window->DC.CursorMaxPos, 3.0f, IM_COL32(255,0,0,255), 4); // [LOGGING]
 
     window->DC.PrevLineSize.y = line_height;
     window->DC.CurrLineSize.y = 0.0f;
@@ -8900,12 +8900,12 @@ bool ImGui::ItemAdd(const ImRect& bb, ImGuiID id, const ImRect* nav_bb_arg, ImGu
                 if (window == g.NavWindow || ((window->Flags | g.NavWindow->Flags) & ImGuiWindowFlags_NavFlattened))
                     NavProcessItem();
 
-        // [DEBUG] People keep stumbling on this problem and using "" as identifier in the root of a window instead of "##something".
+        // [LOGGING] People keep stumbling on this problem and using "" as identifier in the root of a window instead of "##something".
         // Empty identifier are valid and useful in a small amount of cases, but 99.9% of the time you want to use "##something".
         // READ THE FAQ: https://dearimgui.org/faq
         IM_ASSERT(id != window->ID && "Cannot have an empty ID at the root of a window. If you need an empty label, use ## and read the FAQ about how the ID Stack works!");
 
-        // [DEBUG] Item Picker tool, when enabling the "extended" version we perform the check in ItemAdd()
+        // [LOGGING] Item Picker tool, when enabling the "extended" version we perform the check in ItemAdd()
 #ifdef IMGUI_DEBUG_TOOL_ITEM_PICKER_EX
         if (id == g.DebugItemPickerBreakId)
         {
@@ -8925,7 +8925,7 @@ bool ImGui::ItemAdd(const ImRect& bb, ImGuiID id, const ImRect* nav_bb_arg, ImGu
     const bool is_clipped = IsClippedEx(bb, id);
     if (is_clipped)
         return false;
-    //if (g.IO.KeyAlt) window->DrawList->AddRect(bb.Min, bb.Max, IM_COL32(255,255,0,120)); // [DEBUG]
+    //if (g.IO.KeyAlt) window->DrawList->AddRect(bb.Min, bb.Max, IM_COL32(255,255,0,120)); // [LOGGING]
 
     // We need to calculate this now to take account of the current clipping rectangle (as items like Selectable may change them)
     if (IsMouseHoveringRect(bb.Min, bb.Max))
@@ -9353,7 +9353,7 @@ ImVec2 ImGui::ScrollToRectEx(ImGuiWindow* window, const ImRect& item_rect, ImGui
 {
     ImGuiContext& g = *GImGui;
     ImRect window_rect(window->InnerRect.Min - ImVec2(1, 1), window->InnerRect.Max + ImVec2(1, 1));
-    //GetForegroundDrawList(window)->AddRect(window_rect.Min, window_rect.Max, IM_COL32_WHITE); // [DEBUG]
+    //GetForegroundDrawList(window)->AddRect(window_rect.Min, window_rect.Max, IM_COL32_WHITE); // [LOGGING]
 
     // Check that only one behavior is selected per axis
     IM_ASSERT((flags & ImGuiScrollFlags_MaskX_) == 0 || ImIsPowerOfTwo(flags & ImGuiScrollFlags_MaskX_));
@@ -10892,13 +10892,13 @@ static void ImGui::NavUpdate()
         //IMGUI_DEBUG_LOG("SetMousePos: (%.1f,%.1f)\n", io.MousePos.x, io.MousePos.y);
     }
 
-    // [DEBUG]
+    // [LOGGING]
     g.NavScoringDebugCount = 0;
 #if IMGUI_DEBUG_NAV_RECTS
     if (g.NavWindow)
     {
         ImDrawList* draw_list = GetForegroundDrawList(g.NavWindow);
-        if (1) { for (int layer = 0; layer < 2; layer++) { ImRect r = WindowRectRelToAbs(g.NavWindow, g.NavWindow->NavRectRel[layer]); draw_list->AddRect(r.Min, r.Max, IM_COL32(255,200,0,255)); } } // [DEBUG]
+        if (1) { for (int layer = 0; layer < 2; layer++) { ImRect r = WindowRectRelToAbs(g.NavWindow, g.NavWindow->NavRectRel[layer]); draw_list->AddRect(r.Min, r.Max, IM_COL32(255,200,0,255)); } } // [LOGGING]
         if (1) { ImU32 col = (!g.NavWindow->Hidden) ? IM_COL32(255,0,255,255) : IM_COL32(255,0,0,255); ImVec2 p = NavCalcPreferredRefPos(); char buf[32]; ImFormatString(buf, 32, "%d", g.NavLayer); draw_list->AddCircleFilled(p, 3.0f, col); draw_list->AddText(NULL, 13.0f, p + ImVec2(8,-4), col, buf); }
     }
 #endif
@@ -10964,7 +10964,7 @@ void ImGui::NavUpdateCreateMoveRequest()
         g.NavScoringNoClipRect.TranslateY(scoring_rect_offset_y);
     }
 
-    // [DEBUG] Always send a request
+    // [LOGGING] Always send a request
 #if IMGUI_DEBUG_NAV_SCORING
     if (io.KeyCtrl && IsKeyPressed(ImGuiKey_C))
         g.NavMoveDirForDebug = (ImGuiDir)((g.NavMoveDirForDebug + 1) & 3);
@@ -11021,8 +11021,8 @@ void ImGui::NavUpdateCreateMoveRequest()
         scoring_rect.Min.x = ImMin(scoring_rect.Min.x + 1.0f, scoring_rect.Max.x);
         scoring_rect.Max.x = scoring_rect.Min.x;
         IM_ASSERT(!scoring_rect.IsInverted()); // Ensure if we have a finite, non-inverted bounding box here will allows us to remove extraneous ImFabs() calls in NavScoreItem().
-        //GetForegroundDrawList()->AddRect(scoring_rect.Min, scoring_rect.Max, IM_COL32(255,200,0,255)); // [DEBUG]
-        //if (!g.NavScoringNoClipRect.IsInverted()) { GetForegroundDrawList()->AddRect(g.NavScoringNoClipRect.Min, g.NavScoringNoClipRect.Max, IM_COL32(255, 200, 0, 255)); } // [DEBUG]
+        //GetForegroundDrawList()->AddRect(scoring_rect.Min, scoring_rect.Max, IM_COL32(255,200,0,255)); // [LOGGING]
+        //if (!g.NavScoringNoClipRect.IsInverted()) { GetForegroundDrawList()->AddRect(g.NavScoringNoClipRect.Min, g.NavScoringNoClipRect.Max, IM_COL32(255, 200, 0, 255)); } // [LOGGING]
     }
     g.NavScoringRect = scoring_rect;
     g.NavScoringNoClipRect.Add(scoring_rect);
@@ -11058,7 +11058,7 @@ void ImGui::NavMoveRequestApplyResult()
 {
     ImGuiContext& g = *GImGui;
 #if IMGUI_DEBUG_NAV_SCORING
-    if (g.NavMoveFlags & ImGuiNavMoveFlags_DebugNoResult) // [DEBUG] Scoring all items in NavWindow at all times
+    if (g.NavMoveFlags & ImGuiNavMoveFlags_DebugNoResult) // [LOGGING] Scoring all items in NavWindow at all times
         return;
 #endif
 
@@ -12344,7 +12344,7 @@ void ImGui::LoadIniSettingsFromMemory(const char* ini_data, size_t ini_size)
     }
     g.SettingsLoaded = true;
 
-    // [DEBUG] Restore untouched copy so it can be browsed in Metrics (not strictly necessary)
+    // [LOGGING] Restore untouched copy so it can be browsed in Metrics (not strictly necessary)
     memcpy(buf, ini_data, ini_size);
 
     // Call post-read handlers
@@ -13714,7 +13714,7 @@ void ImGui::DockContextClearNodes(ImGuiContext* ctx, ImGuiID root_id, bool clear
     DockBuilderRemoveNodeChildNodes(root_id);
 }
 
-// [DEBUG] This function also acts as a defacto test to make sure we can rebuild from scratch without a glitch
+// [LOGGING] This function also acts as a defacto test to make sure we can rebuild from scratch without a glitch
 // (Different from DockSettingsHandler_ClearAll() + DockSettingsHandler_ApplyAll() because this reuses current settings!)
 void ImGui::DockContextRebuildNodes(ImGuiContext* ctx)
 {
@@ -13779,7 +13779,7 @@ void ImGui::DockContextNewFrameUpdateDocking(ImGuiContext* ctx)
     if (!(g.IO.ConfigFlags & ImGuiConfigFlags_DockingEnable))
         return;
 
-    // [DEBUG] Store hovered dock node.
+    // [LOGGING] Store hovered dock node.
     // We could in theory use DockNodeTreeFindVisibleNodeByPos() on the root host dock node, but using ->DockNode is a good shortcut.
     // Note this is mostly a debug thing and isn't actually used for docking target, because docking involve more detailed filtering.
     g.HoveredDockNode = NULL;
@@ -16081,7 +16081,7 @@ void ImGui::DockNodeTreeUpdateSplitter(ImGuiDockNode* node)
                 for (int touching_node_n = 0; touching_node_n < touching_nodes[1].Size; touching_node_n++)
                     resize_limits[1] = ImMin(resize_limits[1], touching_nodes[1][touching_node_n]->Rect().Max[axis] - min_size);
 
-                // [DEBUG] Render touching nodes & limits
+                // [LOGGING] Render touching nodes & limits
                 /*
                 ImDrawList* draw_list = node->HostWindow ? GetForegroundDrawList(node->HostWindow) : GetForegroundDrawList(GetMainViewport());
                 for (int n = 0; n < 2; n++)
@@ -17272,7 +17272,7 @@ static void ImGui::DockSettingsHandler_WriteAll(ImGuiContext* ctx, ImGuiSettings
             buf->appendf(" Selected=0x%08X", node_settings->SelectedTabId);
 
 #if IMGUI_DEBUG_INI_SETTINGS
-        // [DEBUG] Include comments in the .ini file to ease debugging
+        // [LOGGING] Include comments in the .ini file to ease debugging
         if (ImGuiDockNode* node = DockContextFindNodeByID(ctx, node_settings->ID))
         {
             buf->appendf("%*s", ImMax(2, (line_start_pos + 92) - buf->size()), "");     // Align everything
@@ -18054,7 +18054,7 @@ void ImGui::ShowMetricsWindow(bool* p_open)
     End();
 }
 
-// [DEBUG] List fonts in a font atlas and display its texture
+// [LOGGING] List fonts in a font atlas and display its texture
 void ImGui::ShowFontAtlas(ImFontAtlas* atlas)
 {
     for (int i = 0; i < atlas->Fonts.Size; i++)
@@ -18073,7 +18073,7 @@ void ImGui::ShowFontAtlas(ImFontAtlas* atlas)
     }
 }
 
-// [DEBUG] Display contents of Columns
+// [LOGGING] Display contents of Columns
 void ImGui::DebugNodeColumns(ImGuiOldColumns* columns)
 {
     if (!TreeNode((void*)(uintptr_t)columns->ID, "Columns Id: 0x%08X, Count: %d, Flags: 0x%04X", columns->ID, columns->Count, columns->Flags))
@@ -18112,7 +18112,7 @@ static void DebugNodeDockNodeFlags(ImGuiDockNodeFlags* p_flags, const char* labe
     PopID();
 }
 
-// [DEBUG] Display contents of ImDockNode
+// [LOGGING] Display contents of ImDockNode
 void ImGui::DebugNodeDockNode(ImGuiDockNode* node, const char* label)
 {
     ImGuiContext& g = *GImGui;
@@ -18167,7 +18167,7 @@ void ImGui::DebugNodeDockNode(ImGuiDockNode* node, const char* label)
     }
 }
 
-// [DEBUG] Display contents of ImDrawList
+// [LOGGING] Display contents of ImDrawList
 // Note that both 'window' and 'viewport' may be NULL here. Viewport is generally null of destroyed popups which previously owned a viewport.
 void ImGui::DebugNodeDrawList(ImGuiWindow* window, ImGuiViewportP* viewport, const ImDrawList* draw_list, const char* label)
 {
@@ -18262,7 +18262,7 @@ void ImGui::DebugNodeDrawList(ImGuiWindow* window, ImGuiViewportP* viewport, con
     TreePop();
 }
 
-// [DEBUG] Display mesh/aabb of a ImDrawCmd
+// [LOGGING] Display mesh/aabb of a ImDrawCmd
 void ImGui::DebugNodeDrawCmdShowMeshAndBoundingBox(ImDrawList* out_draw_list, const ImDrawList* draw_list, const ImDrawCmd* draw_cmd, bool show_mesh, bool show_aabb)
 {
     IM_ASSERT(show_mesh || show_aabb);
@@ -18292,7 +18292,7 @@ void ImGui::DebugNodeDrawCmdShowMeshAndBoundingBox(ImDrawList* out_draw_list, co
     out_draw_list->Flags = backup_flags;
 }
 
-// [DEBUG] Display details for a single font, called by ShowStyleEditor().
+// [LOGGING] Display details for a single font, called by ShowStyleEditor().
 void ImGui::DebugNodeFont(ImFont* font)
 {
     bool opened = TreeNode(font, "Font: \"%s\"\n%.2f px, %d glyphs, %d file(s)",
@@ -18388,7 +18388,7 @@ void ImGui::DebugNodeFont(ImFont* font)
     TreePop();
 }
 
-// [DEBUG] Display contents of ImGuiStorage
+// [LOGGING] Display contents of ImGuiStorage
 void ImGui::DebugNodeStorage(ImGuiStorage* storage, const char* label)
 {
     if (!TreeNode(label, "%s: %d entries, %d bytes", label, storage->Data.Size, storage->Data.size_in_bytes()))
@@ -18401,7 +18401,7 @@ void ImGui::DebugNodeStorage(ImGuiStorage* storage, const char* label)
     TreePop();
 }
 
-// [DEBUG] Display contents of ImGuiTabBar
+// [LOGGING] Display contents of ImGuiTabBar
 void ImGui::DebugNodeTabBar(ImGuiTabBar* tab_bar, const char* label)
 {
     // Standalone tab bars (not associated to docking/windows functionality) currently hold no discernible strings.
@@ -18581,10 +18581,10 @@ void ImGui::DebugNodeWindowsListByBeginStackParent(ImGuiWindow** windows, int wi
 }
 
 //-----------------------------------------------------------------------------
-// [SECTION] OTHER DEBUG TOOLS (ITEM PICKER, STACK TOOL)
+// [SECTION] OTHER LOGGING TOOLS (ITEM PICKER, STACK TOOL)
 //-----------------------------------------------------------------------------
 
-// [DEBUG] Item picker tool - start with DebugStartItemPicker() - useful to visually select an item and break into its call-stack.
+// [LOGGING] Item picker tool - start with DebugStartItemPicker() - useful to visually select an item and break into its call-stack.
 void ImGui::UpdateDebugToolItemPicker()
 {
     ImGuiContext& g = *GImGui;
@@ -18609,7 +18609,7 @@ void ImGui::UpdateDebugToolItemPicker()
     EndTooltip();
 }
 
-// [DEBUG] Stack Tool: update queries. Called by NewFrame()
+// [LOGGING] Stack Tool: update queries. Called by NewFrame()
 void ImGui::UpdateDebugToolStackQueries()
 {
     ImGuiContext& g = *GImGui;
@@ -18649,7 +18649,7 @@ void ImGui::UpdateDebugToolStackQueries()
     }
 }
 
-// [DEBUG] Stack tool: hooks called by GetID() family functions
+// [LOGGING] Stack tool: hooks called by GetID() family functions
 void ImGui::DebugHookIdInfo(ImGuiID id, ImGuiDataType data_type, const void* data_id, const void* data_id_end)
 {
     ImGuiContext& g = *GImGui;

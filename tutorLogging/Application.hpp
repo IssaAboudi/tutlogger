@@ -17,17 +17,19 @@
 #include "Ext/imgui/imgui.h"
  #include "DebugMode.hpp"
 
-#define NUM_ACTIVE_STUDENTS 20
+
 
 
 namespace tutlogger {
+    //Application specific functions
+
     void processFiles(std::vector<Student> &tutees);
 
-    void createWindow(std::vector<Student> &tutees, Student** f_tutees);
+    void createWindow(std::vector<Student> &tutees, Student** active);
 
-    void tutorialWindow();
+    void tutorialWindow(); //TODO: Remove
 
-    Status updateFile(Student** f_tutees, std::vector<Student>&tutees);
+    Status updateFile(Student** active, std::vector<Student>&tutees);
 }
 
 void clearCIN(void);
@@ -40,6 +42,7 @@ std::string getTime(void);
 
 std::pair<std::string, std::string> breakTime(std::string inString, char delim);
 
+//Depreciated - CLI Functions
 void addNewSession(std::fstream &file, Student* student);
 
 void addNewSession(std::fstream &file, float &time, Student* student);

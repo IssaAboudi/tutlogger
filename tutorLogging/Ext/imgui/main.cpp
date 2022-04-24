@@ -47,7 +47,7 @@ int main(int, char**)
 #endif
 
     // Create window with graphics context
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "TutLogger - by MIA", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(800, 600, "TutLogger - by MIA", NULL, NULL);
     if (window == NULL)
         return 1;
     glfwMakeContextCurrent(window);
@@ -93,21 +93,24 @@ int main(int, char**)
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/ProggyTiny.ttf", 10.0f);
-    io.Fonts->AddFontFromFileTTF("/home/issaaboudi/Downloads/makasih/Makasih.ttf", 20.0f);
+    io.Fonts->AddFontFromFileTTF("/home/issaaboudi/Git_Projects/tutlogger/tutorLogging/Ext/font/Makasih.ttf", 20.0f);
+//    io.Fonts->AddFontFromFileTTF("../font/Makasih.ttf", 20.0f);
     //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
 //    IM_ASSERT(font != NULL);
 
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
+
+    //TODO: Better Naming for variables - three different tutee variants..?
     std::vector<Student> tutees; //Will store all the tutees we have during runtime.
     // - filled when we start the application in processFiles()
 
-    Student* f_tutees[NUM_ACTIVE_STUDENTS]; //pointer to tutee objects in vector that we've modified/edited
+    Student* active[NUM_ACTIVE_STUDENTS]; //pointer to tutee objects in vector that we've modified/edited
     // - Lets us adjust and print log for all the tutees modified only.
     // - 20 students can be modified at a time, probably plenty but can be changed in macro.
 
-    //Do stuff with my program before the loop
+    //Setup stuff for the program
     tutlogger::processFiles(tutees); //load all data from JSON file
 
 
@@ -129,7 +132,7 @@ int main(int, char**)
 //        tutlogger::tutorialWindow();
 
 //      [APPLICATION WINDOW]
-        tutlogger::createWindow(tutees, f_tutees);
+        tutlogger::createWindow(tutees, active);
 
         // Rendering
         ImGui::Render();
@@ -154,7 +157,6 @@ int main(int, char**)
         glfwSwapBuffers(window);
     }
 
-    //TODO: update files
 
     // Cleanup
     ImGui_ImplOpenGL3_Shutdown();

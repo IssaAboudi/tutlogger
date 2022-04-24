@@ -20,6 +20,7 @@ public:
     //TODO: When getting total time with Student format in Hours & minutes
     //TODO: Come up with more fields that might be useful to store
 
+    bool selected = false;
     //Maybe?
 //    int hours = 0;
 //    int min = 0;

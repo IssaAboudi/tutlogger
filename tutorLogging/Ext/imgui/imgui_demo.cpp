@@ -5189,7 +5189,7 @@ static void ShowDemoWindowTables()
     // In this example we'll expose most table flags and settings.
     // For specific flags and settings refer to the corresponding section for more detailed explanation.
     // This section is mostly useful to experiment with combining certain flags or settings with each others.
-    //ImGui::SetNextItemOpen(true, ImGuiCond_Once); // [DEBUG]
+    //ImGui::SetNextItemOpen(true, ImGuiCond_Once); // [LOGGING]
     if (open_action != -1)
         ImGui::SetNextItemOpen(open_action != 0);
     IMGUI_DEMO_MARKER("Tables/Advanced");
@@ -8037,9 +8037,9 @@ void ShowExampleAppDocuments(bool* p_open)
             if (opt_reorderable)
                 NotifyOfDocumentsClosedElsewhere(app);
 
-            // [DEBUG] Stress tests
-            //if ((ImGui::GetFrameCount() % 30) == 0) docs[1].Open ^= 1;            // [DEBUG] Automatically show/hide a tab. Test various interactions e.g. dragging with this on.
-            //if (ImGui::GetIO().KeyCtrl) ImGui::SetTabItemSelected(docs[1].Name);  // [DEBUG] Test SetTabItemSelected(), probably not very useful as-is anyway..
+            // [LOGGING] Stress tests
+            //if ((ImGui::GetFrameCount() % 30) == 0) docs[1].Open ^= 1;            // [LOGGING] Automatically show/hide a tab. Test various interactions e.g. dragging with this on.
+            //if (ImGui::GetIO().KeyCtrl) ImGui::SetTabItemSelected(docs[1].Name);  // [LOGGING] Test SetTabItemSelected(), probably not very useful as-is anyway..
 
             // Submit Tabs
             for (int doc_n = 0; doc_n < app.Documents.Size; doc_n++)

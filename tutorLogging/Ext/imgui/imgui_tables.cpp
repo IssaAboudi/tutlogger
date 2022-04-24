@@ -2394,7 +2394,7 @@ void ImGui::TableMergeDrawChannels(ImGuiTable* table)
         column->DrawChannelCurrent = (ImGuiTableDrawChannelIdx)-1;
     }
 
-    // [DEBUG] Display merge groups
+    // [LOGGING] Display merge groups
 #if 0
     if (g.IO.KeyShift)
         for (int merge_group_n = 0; merge_group_n < IM_ARRAYSIZE(merge_groups); merge_group_n++)
@@ -2909,8 +2909,8 @@ void ImGui::TableHeader(const char* label)
     if (!ItemAdd(bb, id))
         return;
 
-    //GetForegroundDrawList()->AddRect(cell_r.Min, cell_r.Max, IM_COL32(255, 0, 0, 255)); // [DEBUG]
-    //GetForegroundDrawList()->AddRect(bb.Min, bb.Max, IM_COL32(255, 0, 0, 255)); // [DEBUG]
+    //GetForegroundDrawList()->AddRect(cell_r.Min, cell_r.Max, IM_COL32(255, 0, 0, 255)); // [LOGGING]
+    //GetForegroundDrawList()->AddRect(bb.Min, bb.Max, IM_COL32(255, 0, 0, 255)); // [LOGGING]
 
     // Using AllowItemOverlap mode because we cover the whole cell, and we want user to be able to submit subsequent items.
     bool hovered, held;

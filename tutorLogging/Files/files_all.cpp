@@ -45,7 +45,7 @@ Status updateRecords(const std::string &filePath, std::vector<Student> students)
 Status loadRecords(const std::string &filePath, std::vector<Student> &students){
     //pull tutee data from disk to vector students
     std::string logFile = filePath;
-    logFile += "/students.json";
+    logFile += "/students.json"; //json file
 
     LOG("loadRecords: " << filePath);
     LOG("loadRecords: " << logFile);
@@ -53,24 +53,32 @@ Status loadRecords(const std::string &filePath, std::vector<Student> &students){
     std::fstream newFile(logFile, std::ios::in);
     if(newFile.fail()){ //if file fails to open
         LOG("loadRecords: Error reading log file");
-        std::fstream newFile(logFile, std::ios::out | std::ios::in);
-        return EMPTY;
+        newFile.open(logFile, std::ios::out); //make logFile
+        if(newFile.fail()){ //check if it fails again
+            LOG("loadRecords: Error creating log file");
+            return EMPTY; //PROBLEM
+        }
+        newFile.close();
+        newFile.open(logFile, std::ios::in);
     }
     nlohmann::json tempJSON = nlohmann::json::array(); //json array to store data from file
     newFile >> tempJSON;
-    for(int i = 0; i < tempJSON.size(); i++) { //loop through each json element in the array
-        for(auto &x : tempJSON.at(i).items()){ //iterate through each JSON element like a map
-            Student newStudent;
-            newStudent.name = x.key(); //extract the key
-            LOG("loadRecords: " << newStudent.name);
+    LOG("loadRecords: tempJSON.size(): " << tempJSON.size());
+    if(tempJSON.size() > 0) {
+        for (int i = 0; i < tempJSON.size(); i++) { //loop through each json element in the array
+            for (auto &x: tempJSON.at(i).items()) { //iterate through each JSON element like a map
+                Student newStudent;
+                newStudent.name = x.key(); //extract the key
+                LOG("loadRecords: " << newStudent.name);
 
-            //Pulls data from JSON file by accessing each entry
-            newStudent.subject = x.value()["Subject"];
-            newStudent.numSessions = x.value()["#ofSessions"];
-            newStudent.time = x.value()["Total Time"];
-            //TODO: Pull other data (TO BE IMPLEMENTED)
+                //Pulls data from JSON file by accessing each entry
+                newStudent.subject = x.value()["Subject"];
+                newStudent.numSessions = x.value()["#ofSessions"];
+                newStudent.time = x.value()["Total Time"];
+                //TODO: Pull other data (TO BE IMPLEMENTED)
 
-            students.push_back(newStudent);
+                students.push_back(newStudent);
+            }
         }
     }
     LOG("loadRecords: # of students " << students.size());

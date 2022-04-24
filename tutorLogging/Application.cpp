@@ -3,7 +3,9 @@
 
 #define PADDING ImGui::NewLine()
 #define SEPARATOR ImGui::Separator()
+#define TIME_POINT std::chrono::system_clock::time_point
 
+using namespace ImGui;
 //======================================================
 /*
  * Purpose of this program is to make logging tutoring hours
@@ -21,6 +23,7 @@ namespace tutlogger {
 
     void processFiles(std::vector<Student> &tutees){
         //Create folder for our program to store data in (easily accessible by the user)
+
         std::string folder = getFilePath(); //stores OS specific file path (see function definition)
 
         if(!createFolder(folder)){ //verify that folders were generated/loaded correctly
@@ -41,316 +44,388 @@ namespace tutlogger {
 
 
 
-    void createWindow(std::vector<Student>&tutees, Student** f_tutees){ //handles the onscreen windows - within while loop
+    void createWindow(std::vector<Student> &tutees, Student** active){ //handles the onscreen windows - within while loop
 
-        static bool opt_fullscreen = true;
-        static bool opt_padding = false;
-        static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+            static bool opt_fullscreen = true;
+            static bool opt_padding = false;
+            static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 
-        // We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
-        // because it would be confusing to have two docking targets within each others.
-        ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
-        if (opt_fullscreen)
-        {
-            const ImGuiViewport* viewport = ImGui::GetMainViewport();
-            ImGui::SetNextWindowPos(viewport->WorkPos);
-            ImGui::SetNextWindowSize(viewport->WorkSize);
-            ImGui::SetNextWindowViewport(viewport->ID);
-            ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-            ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-            window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-            window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
-        }
-        else
-        {
-            dockspace_flags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
-        }
+            // We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
+            // because it would be confusing to have two docking targets within each others.
+            ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+            if (opt_fullscreen)
+            {
+                const ImGuiViewport* viewport = GetMainViewport();
+                SetNextWindowPos(viewport->WorkPos);
+                SetNextWindowSize(viewport->WorkSize);
+                SetNextWindowViewport(viewport->ID);
+                PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+                PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+                window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+                window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+            }
+            else
+            {
+                dockspace_flags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
+            }
 
-        // When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background
-        // and handle the pass-thru hole, so we ask Begin() to not render a background.
-        if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
-            window_flags |= ImGuiWindowFlags_NoBackground;
+            // When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background
+            // and handle the pass-thru hole, so we ask Begin() to not render a background.
+            if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+                window_flags |= ImGuiWindowFlags_NoBackground;
 
-        // Important: note that we proceed even if Begin() returns false (aka window is collapsed).
-        // This is because we want to keep our DockSpace() active. If a DockSpace() is inactive,
-        // all active windows docked into it will lose their parent and become undocked.
-        // We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
-        // any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
-        if (!opt_padding)
-            ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-        ImGui::Begin("DockSpace", nullptr, window_flags);
-        if (!opt_padding)
-            ImGui::PopStyleVar();
+            // Important: note that we proceed even if Begin() returns false (aka window is collapsed).
+            // This is because we want to keep our DockSpace() active. If a DockSpace() is inactive,
+            // all active windows docked into it will lose their parent and become undocked.
+            // We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
+            // any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
+            if (!opt_padding)
+                PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+            Begin("DockSpace", nullptr, window_flags);
+            if (!opt_padding)
+                PopStyleVar();
 
-        if (opt_fullscreen)
-            ImGui::PopStyleVar(2);
+            if (opt_fullscreen)
+                PopStyleVar(2);
 
-        // Submit the DockSpace
-        ImGuiIO& io = ImGui::GetIO();
-        if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
-        {
-            ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
-            ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
-        }
+            // Submit the DockSpace
+            ImGuiIO& io = GetIO();
+            if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+            {
+                ImGuiID dockspace_id = GetID("MyDockSpace");
+                DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+            }
 
-//        if (ImGui::BeginMenuBar()) {
-//
-//            if (ImGui::BeginMenu("Options")) {
-//                // Disabling fullscreen would allow the window to be moved to the front of other windows,
-//                // which we can't undo at the moment without finer window depth/z control.
-//                ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
-//                ImGui::EndMenu();
-//            }
-//            ImGui::EndMenuBar();
-//        }
+    //        if (BeginMenuBar()) {
+    //
+    //            if (BeginMenu("Options")) {
+    //                // Disabling fullscreen would allow the window to be moved to the front of other windows,
+    //                // which we can't undo at the moment without finer window depth/z control.
+    //                MenuItem("Fullscreen", NULL, &opt_fullscreen);
+    //                EndMenu();
+    //            }
+    //            EndMenuBar();
+    //        }
 
-        ImGui::End();
+        End();
 
-        static std::chrono::system_clock::time_point start;
-        static std::chrono::system_clock::time_point end;
+        static TIME_POINT startTime;
+        static TIME_POINT endTime;
 
+        //redundancy to prevent button 1 from running button 2 code
+        static bool b1_pressed = false; //is button 1 pressed
+        static bool b2_pressed = false; //is button 2 pressed
 
+        Begin("Main Application"); //Application Window
 
-//        static char names[32];
-
-        ImGui::Begin("Main Application"); //Application Window
-
-        ImGui::Text("Tutor Logging Tool"); //Title
-        ImGui::Text("==================");
+        Text("Tutor Logging Tool"); //Title
+        Text("==================");
 
         //[Add Session] - First Button
         //============================
 
         //variables for first button:
-        static int checked = 0; //Which student of tutees we are currently working on
-        static bool b_tutees[50]; //Unlikely to have more than 50 students at this scale - can scale that up later?
-        static int tempMin; //locally enter time
+        static int checked = 0; //Which index of tutees we are currently working on
+        static int tempMin; //save entered time in GUI window
 
-        if(ImGui::Button("1) Add new session")){
-            ImGui::OpenPopup("newSession");
+        if(Button("1) Add new session")){
+            b1_pressed = true;
+            OpenPopup("newSession");
         }
-        if (ImGui::BeginPopup("newSession", ImGuiWindowFlags_NoTitleBar)) {
-            ImGui::Text("Select tutee:");
-            ImGui::Separator();
+        if (BeginPopup("newSession", ImGuiWindowFlags_NoTitleBar)) {
+            Text("Select tutee:");
+            SEPARATOR;
             for (int i = 0; i < tutees.size(); ++i) { //displays all of the tutees
-                if(ImGui::Button(tutees[i].name.c_str(), ImVec2(140, 30))) {
-                    checked = i; //store the index of the tutee selected (matches with index in parallel bool array)
-                    b_tutees[i] = true; //mark true for tutee at that index in parallel bool array
+                if(Button(tutees[i].name.c_str(), ImVec2(140, 30))) {
+                    checked = i; //save selected tutee's index (so we can refer to it in bool array)
+                    tutees[i].selected = true; //keep track of which tutee was selected
                 }
             }
-            ImGui::EndPopup();
+            EndPopup();
         }
-        if(b_tutees[checked]){
-            ImGui::Text("Enter Hours Logged (min) for");
-            ImGui::SameLine(); ImGui::Text(tutees[checked].name.c_str());
-            ImGui::SameLine(); ImGui::Text(": ");
-            ImGui::InputInt("##Hours", &tempMin, 10); //go up 10 minutes at a time
-//            ImGui::NewLine(); ImGui::SameLine(400); //offset the Done Button
-            if(ImGui::Button("Done", ImVec2(480, 40)) || ImGui::IsKeyPressed(525)){ //525 is the enter key
+        if(tutees[checked].selected && b1_pressed){
+            Text("Enter Hours Logged (min) for");
+
+            SameLine(); Text("%s",tutees[checked].name.c_str());
+            SameLine(); Text(": ");
+
+
+            InputInt("##Hours", &tempMin, 10); //go up 10 minutes at a time
+
+            //EXIT
+            if(Button("Exit", ImVec2(240, 40)) || IsKeyPressed(526)){ //526 is escape
+                tutees[checked].selected = false; //reset - collapse the entry field
+                tempMin = 0; //reset value to 0 (so everyone starts at 0);
+                b1_pressed = false; //we are done with this button
+            }
+            //DONE
+            else if(SameLine(); Button("Done", ImVec2(240, 40)) || IsKeyPressed(525)){ //525 is the enter key
                 LOG("CreateWindow: Before add " << tutees[checked].tempTime);
                 tutees[checked].tempTime += abs(tempMin); //add hours entered to student member TODO: push it back to the JSON and Text
                 LOG("CreateWindow: " << tutees[checked].tempTime << " hour added: " << abs(tempMin));
                 LOG("CreateWindow: After add " << tutees[checked].tempTime);
 
-                f_tutees[f_numTutees] = &tutees[checked]; //reference tutees updated to put in the file
-                f_numTutees++; //move forwards an index
-
-                b_tutees[checked] = false; //reset - collapses the entry field
+                active[f_numTutees] = &tutees[checked]; //reference tutees updated to put in the file
+                f_numTutees++; //move forwards an index to next empty space.
+                LOG("CreateWindow: closed menu");
+                tutees[checked].selected = false; //reset - collapses the entry field
                 tempMin = 0; //reset value to 0 (so everyone starts at 0);
+                b1_pressed = false; //we are done with this button
             }
         }
 
         //[Time Session] - Second Button
         //==============================
 
-        if(ImGui::Button("2) Time session")){
-            //TODO: after timing session we need to select tutee to apply time recorded to
-            ImGui::OpenPopup("Time Session");
+
+        if(Button("2) Time session")){
+            //after timing session we need to select tutee to apply time recorded to
+            b2_pressed = true;
+            OpenPopup("Pick Tutee");
 
         }
+        //selects tutee to time for
+        if(BeginPopupModal("Pick Tutee", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+            Text("Select tutee:");
+            SEPARATOR;
+            for (int i = 0; i < tutees.size(); ++i) { //displays all of the tutees
+                if(Button(tutees[i].name.c_str(), ImVec2(140, 30))) {
+                    checked = i; //store the index of the tutee selected (matches with index in parallel bool array)
+                    tutees[i].selected = true; //mark true for tutee at that index in parallel bool array
 
-        ImVec2 center = ImGui::GetMainViewport()->GetCenter();
-        ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-
-        if(ImGui::BeginPopupModal("Time Session", NULL, ImGuiWindowFlags_AlwaysAutoResize)){
-
-            static bool startPress = false;
-            static bool stopPress = false;
-
-            ImGui::Text("Press the start button when you start your session. \n\t\t\tWhen you're done, press the stop button\n\n");
-            ImGui::Separator();
-            ImGui::NewLine();
-
-            //Start Button
-            ImGui::SameLine(100);
-            ImGui::BeginGroup();
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0,80,0,100)); //TODO: Change Color on Press & Disable Press (START)
-            if(ImGui::Button("Start", ImVec2(100, 40))){
-                startPress = true;
+                } else if(IsKeyPressed(526)){
+                    CloseCurrentPopup();
+                } else {}
             }
-            ImGui::PopStyleColor();
+            EndPopup();
+        }
+
+        if(tutees[checked].selected && b2_pressed){
+            tutees[checked].selected = false; //collapse window
+            LOG("CreateWindow: Open Popup");
+            OpenPopup("Time Session"); //open time session window
+        }
+
+
+        SetNextWindowPos(GetMainViewport()->GetCenter(), ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+        if(BeginPopupModal("Time Session", NULL, ImGuiWindowFlags_AlwaysAutoResize)){
+
+            static bool pressStart = false; //Begin timer when start button pressedColor
+            static bool pressStop = false; //Stop timer when stop button pressedColor
+            static bool isPressed = false; // Check if timer already started
+
+            Text("Press the startTime button when you startTime your session. \n\t\t\tWhen you're done, press the stop button\n\n");
+            SEPARATOR;
+            PADDING;
+
+            //Start & Stop Buttons + Coloring
+
+            static const ImVec4 startColor START_COLOR; //set startTime button color
+            static const ImVec4 stopColor STOP_COLOR; //set stop button color
+            static const ImVec4 pressedColor PRESSED_COLOR; //set pressedColor color
+            static ImVec4 start_current = startColor;
+
+            //=====================================================================================
+            //Start Button
+            SameLine(100);
+            BeginGroup();
+            PushStyleColor(ImGuiCol_Button, start_current);
+            if(Button("Start", ImVec2(150, 60)) && !isPressed){
+                pressStart = true; //start timer
+                isPressed = true; //set it, so we can't restart the timer by pressing the button
+                start_current = pressedColor; //grey out button
+            }
+            PopStyleColor();
+
 
             //Stop Button
-            ImGui::SameLine(200);
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(100,0,0,100)); //TODO: Change Color on Press & Disable Press (END)
-            if(ImGui::Button("Stop", ImVec2(100, 40))){
-                stopPress = true;
+            SameLine(200);
+            PushStyleColor(ImGuiCol_Button, stopColor);
+            if(Button("Stop", ImVec2(150, 60))){
+                pressStop = true;
             }
-            ImGui::PopStyleColor();
-            ImGui::EndGroup();
+            PopStyleColor();
+            EndGroup();
+            //=====================================================================================
 
-            if(startPress){
-                start = std::chrono::system_clock::now();
-                end = std::chrono::system_clock::now();
-                startPress = false;
+            if(pressStart){
+                LOG("CreateWindow: Start Button Pressed");
+                startTime = std::chrono::system_clock::now(); //record start time
+                endTime = std::chrono::system_clock::now(); //this just so it doesn't display garbage before we click stop button
+                pressStart = false; //unclick the button
             }
-            if(stopPress == true){
-                end = std::chrono::system_clock::now();
-                stopPress = false;
-
+            if(pressStop){
+                LOG("CreateWindow: Stop Button Pressed");
+                endTime = std::chrono::system_clock::now(); //record end time
+                pressStop = false; //unclick the button
+                isPressed = false; //unblock start button - let us be able to click start again
+                start_current = startColor; //reset startTime button color back
             }
 
             float minutes = 0.0;
-            std::chrono::duration<float> duration = end - start; //calculate duration
-#if DEBUG == ON
-            minutes = std::chrono::duration_cast<std::chrono::seconds>(duration).count(); //really seconds
-#elif DEBUG == OFF
+            std::chrono::duration<float> duration = endTime - startTime; //calculate duration
+#if LOGGING == ON
+            minutes = std::chrono::duration_cast<std::chrono::seconds>(duration).count(); //for debugging purposes, we're gonna treat seconds as minutes
+#elif LOGGING == OFF
             minutes = std::chrono::duration_cast<std::chrono::seconds>(duration).count() / 60;
 #endif
-            ImGui::Text(std::to_string(minutes).c_str());
-            //TODO: Fix output & use this to write to files
-            // - ImGui::Text doesn't like cstrings
+            Text("%s",std::to_string(minutes).c_str());
 
 
 
-            ImGui::SameLine(500);
-            if (ImGui::Button("Exit", ImVec2(120, 40))) {
-                ImGui::CloseCurrentPopup();
+            PADDING;
+            //EXIT BUTTON
+            SameLine(350);
+            if( Button("Exit", ImVec2(120, 40)) || IsKeyPressed(526)) { //526 is escape
+                CloseCurrentPopup();
+                b2_pressed = false;
+            }
+            //SAVE BUTTON
+            SameLine(500);
+            if (Button("Save", ImVec2(120, 40))|| IsKeyPressed(525)) { //525 is enter
+                tutees[checked].tempTime += minutes;
+                active[f_numTutees] = &tutees[checked]; //reference tutees updated to put in the file
+                f_numTutees++; //move forwards an index
+                CloseCurrentPopup();
                 LOG("CreateWindow: Minutes at Close " << minutes );
+                startTime = std::chrono::system_clock::now();
+                endTime = std::chrono::system_clock::now();
+                b2_pressed = false;
             } //exit
-            ImGui::EndPopup();
+            EndPopup();
         }
 
         //[Add Tutee] - Third Button
         //==========================
 
-
-        if(ImGui::Button("3) Add new Tutee")){
-            ImGui::OpenPopup("Add Tutee");
+        if(Button("3) Add new Tutee")){
+            OpenPopup("Add Tutee");
         }
-        if(ImGui::BeginPopupModal("Add Tutee", NULL, ImGuiWindowFlags_AlwaysAutoResize)){
+        if(BeginPopupModal("Add Tutee", NULL, ImGuiWindowFlags_AlwaysAutoResize)){
             static char name[64] = "";
             static char subject[64] = "";
 
 
-            ImGui::Text("Enter tutee Name and Subject");
+            Text("Enter tutee Name and Subject");
             SEPARATOR;
             PADDING;
 
             //Label and Text Input for adding new tutee
-            ImGui::Text("Name:"); ImGui::InputText("##", name, 64);
+            Text("Name:"); InputText("##", name, 64);
             PADDING;
-            ImGui::Text("Subject:"); ImGui::InputText("###", subject, 64);
+            Text("Subject:"); InputText("###", subject, 64);
 
             //Vertical Padding between text input and buttons
             PADDING; PADDING;
 
-            ImGui::SameLine(15);
+            SameLine(15);
             //Exit popup without adding new tutee / Discard Changes
-            if (ImGui::Button("Exit", ImVec2(120, 40))) {
-                ImGui::CloseCurrentPopup();
+            if (Button("Exit", ImVec2(120, 40)) || IsKeyPressed(526)) {
+                CloseCurrentPopup();
             }
 
             //Add new tutee and close popup / Apply Changes
-            ImGui::SameLine(220);
-            if (ImGui::Button("Apply", ImVec2(120, 40))) {
+            SameLine(220);
+            if (Button("Apply", ImVec2(120, 40)) || IsKeyPressed(525)) {
                 Student tempStudent; //make new student
                 tempStudent.name = name; //copy name
                 tempStudent.subject = subject; //copy subject
 
                 tutees.push_back(tempStudent);//add it to the vector of all students
-                ImGui::CloseCurrentPopup();
+                CloseCurrentPopup();
             } //Apply
 
-
-            ImGui::EndPopup();
+            EndPopup();
         }
 
         //[List Tutees] - Fourth Button
         //=============================
+
         //variables for fourth button:
         static int listButton = 0;
 
-        if(ImGui::Button("4) List all Tutees")){
+        if(Button("4) List all Tutees")){
             listButton++;
         }
         if(listButton & 1){
             for (int i = 0; i < tutees.size(); ++i) { //displays all of the current tutees
-                ImGui::Text(tutees[i].name.c_str());
+                Text("%s",tutees[i].name.c_str());
             }
         }
 
-        if(ImGui::Button("5) Update Log")){
-            updateFile(f_tutees, tutees);
+        //[Update Log] - Fifth Button
+        //=============================
+
+        if(Button("5) Update Log")){
+            updateFile(active, tutees);
         }
 
-        ImGui::End();
-        ImGui::ShowDemoWindow();
+        End();
     }
 
-    Status updateFile(Student** f_tutees, std::vector<Student>&tutees){
-        std::string txt = getFilePath();
-        std::string json = txt;
-        txt += "/tutoringLog.txt";
-        json += "/students.json";
-        std::fstream tutoringFile(txt, std::fstream::app); //open the txt file to update first:
-
-        int hour;
-        int min;
-
-        //Writes out to the text file
-        for (int i = 0; i < f_numTutees; i++) {
-            hour = f_tutees[i]->tempTime / 60; // extract hours
-            min = f_tutees[i]->tempTime % 60;  // extract minutes
-            tutoringFile << f_tutees[i]->name << " | " << getDate() << " : " << f_tutees[i]->subject
-            << " - " << hour << " hour(s) and " << min << " minutes" << std::endl;
-
-            f_tutees[i]->time += f_tutees[i]->tempTime; //add time to total time
-            f_tutees[i]->tempTime = 0; //reset tempTime to 0
-        }
-
-        tutoringFile.close(); //close previous file
-        tutoringFile.open(json, std::ios::out); //open the json file
-
-        //Write out to the json file
-        nlohmann::json studentArray = nlohmann::json::array(); //json array to store data to file
-        for(int i = 0; i < tutees.size(); i++){
-            nlohmann::json data;
-            nlohmann::json header;
-
-            //Store data in JSON format
-            data["Subject"] = tutees[i].subject;
-            data["#ofSessions"] = tutees[i].numSessions;
-            data["Total Time"] = tutees[i].time;
-
-            //Put data under header:
-            header[tutees[i].name] = data; //creates header for data organized.
-            studentArray.push_back(header); //All data under "header" now, push into total array
-
-        }
-        tutoringFile << std::setw(4) << studentArray;
-        LOG("updateFile: Updated JSON file");
-        tutoringFile.close(); // done with the file
-
-        // Once we write out everything to the files, we can reset the temporary array:
-        for (int i = 0; i < f_numTutees; i++) {
-            f_tutees[i] = nullptr;
+    Status updateFile(Student** active, std::vector<Student>&tutees){
+        static bool cleared = false;
+        //if there are no students currently being worked on - should not update file
+        if(active[0] == nullptr && !cleared){ //if first student reference is not filled with data, then nope out
+            return EMPTY; //there's nothing to write to the files
+            LOG("updateFile: Update a student or add a new student before writing to a file");
         }
 
         if(f_numTutees < 1){
             LOG("updateFile: ERROR: No tutees modified yet");
             return EMPTY;
         } else {
+
+            static std::string txt = getFilePath();
+            static std::string json = txt;
+            txt += "/tutoringLog.txt"; //text file
+            json += "/students.json"; // json file
+            std::fstream tutoringFile(txt, std::fstream::app); //open the txt file to update first:
+
+            int hour;
+            int min;
+
+            //Writes out to the text file
+            for (int i = 0; i < f_numTutees; i++) {
+                hour = active[i]->tempTime / 60; // extract hours
+                min = active[i]->tempTime % 60;  // extract minutes
+                tutoringFile << active[i]->name << " | " << getDate() << " : " << active[i]->subject
+                             << " - " << hour << " hour(s) and " << min << " minutes" << std::endl;
+
+                active[i]->time += active[i]->tempTime; //add time to total time
+                active[i]->tempTime = 0; //reset tempTime to 0
+            }
+            LOG("updateFile: Updated text file");
+            tutoringFile.close(); //close previous file
+            tutoringFile.open(json, std::ios::out); //open the json file
+
+            //Write out to the json file
+            nlohmann::json studentArray = nlohmann::json::array(); //json array to store data to file
+            for (int i = 0; i < tutees.size(); i++) {
+                nlohmann::json data;
+                nlohmann::json header;
+
+                //Store data in JSON format
+                data["Subject"] = tutees[i].subject;
+                data["#ofSessions"] = tutees[i].numSessions;
+                data["Total Time"] = tutees[i].time;
+
+                //Put data under header:
+                header[tutees[i].name] = data; //creates header for data organized.
+                studentArray.push_back(header); //All data under "header" now, push into total array
+
+            }
+            tutoringFile << std::setw(4) << studentArray;
+            LOG("updateFile: Updated JSON file");
+            tutoringFile.close(); // done with the file
+
+            // Once we write out everything to the files, we can reset the temporary array:
+            for (int i = 0; i < f_numTutees; i++) {
+                active[i] = nullptr;
+                cleared = true;
+            }
+            LOG("updateFile: Successfully added Record");
             return FILLED;
         }
 
@@ -364,46 +439,45 @@ namespace tutlogger {
         bool show_another_window = false;
         ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-        // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
+        // 1. Show the big demo window (Most of the sample code is in ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
         if (show_demo_window)
-            ImGui::ShowDemoWindow(&show_demo_window);
+            ShowDemoWindow(&show_demo_window);
 
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
         {
             static float f = 0.0f;
             static int counter = 0;
 
-            ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+            Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
 
-            ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-            ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-            ImGui::Checkbox("Another Window", &show_another_window);
+            Text("This is some useful text.");               // Display some text (you can use a format strings too)
+            Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
+            Checkbox("Another Window", &show_another_window);
 
-            ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-            ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+            SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+            ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
 
-            if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+            if (Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
                 counter++;
-            ImGui::SameLine();
-            ImGui::Text("counter = %d", counter);
+            SameLine();
+            Text("counter = %d", counter);
 
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-            ImGui::End();
+            Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / GetIO().Framerate, GetIO().Framerate);
+            End();
         }
 
         // 3. Show another simple window.
         if (show_another_window)
         {
-            ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-            ImGui::Text("Hello from another window!");
-            if (ImGui::Button("Close Me"))
+            Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+            Text("Hello from another window!");
+            if (Button("Close Me"))
                 show_another_window = false;
-            ImGui::End();
+            End();
         }
     }
 } //end of namespace
 
-//DEPRICATED:
 
 void unitTest(){
     //Testing here
@@ -496,6 +570,9 @@ std::pair<std::string, std::string> breakTime(std::string inString, char delim){
     return finalPair;
 }
 
+
+
+//DEPRICATED: (TODO:Remove)
 void addNewSession(std::fstream &file, Student* student){
     std::string input = "";
     std::string numInput = "";

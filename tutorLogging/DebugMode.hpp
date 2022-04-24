@@ -4,12 +4,13 @@
 
 #ifndef TUTORLOGGING_DEBUGMODE_HPP
 #define TUTORLOGGING_DEBUGMODE_HPP
+//TODO: Make this a settings window
 
 #define OFF 0
 #define ON 1
 //-=-=-=-=-=-=-=-=-=-=-=//
 //Quick Logging
-#define DEBUG ON
+#define LOGGING ON
 
 //Release Mode toggle (Computer specific file paths)
 #define RELEASE OFF
@@ -19,11 +20,23 @@
 #define UNIT_TEST OFF
 
 //-=-=-=-=-=-=-=-=-=-=-=//
-#if DEBUG == ON
+#if LOGGING == ON
 #define LOG(X) std::cout << X << std::endl
-#elif DEBUG == OFF
+#elif LOGGING == OFF
 #define LOG(X)
 #endif
+
+#define NUM_ACTIVE_STUDENTS 20
+//Number of students that can be updated at a time before updating log file
+// 20 probably more than needed but can be changed as needed
+// TODO: check edge case (when reach limit)
+
+//***************************//
+//TODO: Figure out what colors to use
+#define START_COLOR {0, 80, 0, 100}
+#define STOP_COLOR {100, 0, 0, 100}
+#define PRESSED_COLOR {0, 80, 20, 100}
+//***************************//
 
 #define SPACER() std::cout << std::endl
 
