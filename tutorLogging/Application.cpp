@@ -38,8 +38,8 @@ namespace tutlogger {
 
         loadRecords(folder, tutees); //read in Student data from JSON file
         makeLog(folder, tutoringFile); //opens the log file for editing - if it doesn't exists, creates it.
-
         tutoringFile.close(); //close file when loaded data.
+        LOG("processFiles: Executed as expected");
     }
 
 
@@ -143,13 +143,11 @@ namespace tutlogger {
             }
             EndPopup();
         }
-        if(tutees[checked].selected && b1_pressed){
+        if(b1_pressed && tutees[checked].selected){
             Text("Enter Hours Logged (min) for");
 
             SameLine(); Text("%s",tutees[checked].name.c_str());
             SameLine(); Text(": ");
-
-
             InputInt("##Hours", &tempMin, 10); //go up 10 minutes at a time
 
             //EXIT
@@ -160,10 +158,10 @@ namespace tutlogger {
             }
             //DONE
             else if(SameLine(); Button("Done", ImVec2(240, 40)) || IsKeyPressed(525)){ //525 is the enter key
-                LOG("CreateWindow: Before add " << tutees[checked].tempTime);
+                LOG("CreateWindow: Before adding to " << tutees[checked].name << ": " << tutees[checked].tempTime << " minutes");
                 tutees[checked].tempTime += abs(tempMin); //add hours entered to student member TODO: push it back to the JSON and Text
-                LOG("CreateWindow: " << tutees[checked].tempTime << " hour added: " << abs(tempMin));
-                LOG("CreateWindow: After add " << tutees[checked].tempTime);
+                LOG("CreateWindow: Time added " << tutees[checked].name << ":" << abs(tempMin));
+                LOG("CreateWindow: After adding to " << tutees[checked].name << ": " << tutees[checked].tempTime << " minutes");
 
                 active[f_numTutees] = &tutees[checked]; //reference tutees updated to put in the file
                 f_numTutees++; //move forwards an index to next empty space.
@@ -200,7 +198,7 @@ namespace tutlogger {
             EndPopup();
         }
 
-        if(tutees[checked].selected && b2_pressed){
+        if(b2_pressed && tutees[checked].selected){
             tutees[checked].selected = false; //collapse window
             LOG("CreateWindow: Open Popup");
             OpenPopup("Time Session"); //open time session window
@@ -288,7 +286,7 @@ namespace tutlogger {
                 active[f_numTutees] = &tutees[checked]; //reference tutees updated to put in the file
                 f_numTutees++; //move forwards an index
                 CloseCurrentPopup();
-                LOG("CreateWindow: Minutes at Close " << minutes );
+                LOG("CreateWindow: Session with " << tutees[checked].name << " ended after " << minutes  << " minutes");
                 startTime = std::chrono::system_clock::now();
                 endTime = std::chrono::system_clock::now();
                 b2_pressed = false;
@@ -368,21 +366,22 @@ namespace tutlogger {
         static bool cleared = false;
         //if there are no students currently being worked on - should not update file
         if(active[0] == nullptr && !cleared){ //if first student reference is not filled with data, then nope out
+            //only happens once because it'll always have been cleared before after the first time we clear the active
             return EMPTY; //there's nothing to write to the files
             LOG("updateFile: Update a student or add a new student before writing to a file");
         }
 
+        LOG("f_numTutees = " << f_numTutees);
         if(f_numTutees < 1){
             LOG("updateFile: ERROR: No tutees modified yet");
             return EMPTY;
         } else {
-
             static std::string txt = getFilePath();
             static std::string json = txt;
             txt += "/tutoringLog.txt"; //text file
             json += "/students.json"; // json file
-            std::fstream tutoringFile(txt, std::fstream::app); //open the txt file to update first:
-
+            std::fstream tutoringFile(txt, std::ios::app); //open the txt file to update first:
+            LOG("updateFile: Opened TXT file");
             int hour;
             int min;
 
@@ -397,9 +396,11 @@ namespace tutlogger {
                 active[i]->tempTime = 0; //reset tempTime to 0
             }
             LOG("updateFile: Updated text file");
+            tutoringFile.flush();
             tutoringFile.close(); //close previous file
-            tutoringFile.open(json, std::ios::out); //open the json file
 
+            tutoringFile.open(json, std::ios::out); //open the json file
+            LOG("updateFile: Opened JSON file");
             //Write out to the json file
             nlohmann::json studentArray = nlohmann::json::array(); //json array to store data to file
             for (int i = 0; i < tutees.size(); i++) {
@@ -418,6 +419,7 @@ namespace tutlogger {
             }
             tutoringFile << std::setw(4) << studentArray;
             LOG("updateFile: Updated JSON file");
+            tutoringFile.flush();
             tutoringFile.close(); // done with the file
 
             // Once we write out everything to the files, we can reset the temporary array:
@@ -425,6 +427,7 @@ namespace tutlogger {
                 active[i] = nullptr;
                 cleared = true;
             }
+            f_numTutees = 0; //reset index of "active" array
             LOG("updateFile: Successfully added Record");
             return FILLED;
         }
